@@ -11,3 +11,103 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+//enum----------->
+
+enum Role {
+  CUSTOMER
+  PROVIDER
+  ADMIN
+}
+
+enum OrderStatus {
+  PLACED
+  CONFIRMED
+  PAID
+  PICKED_UP
+  RETURNED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+//model
+
+model User {
+  id        String        @id @default(uuid())
+  name      String
+  email     String        @unique
+  password  String
+  role      Role
+  status    String        @default("ACTIVE")
+  gears     GearItem[]
+  rentals   RentalOrder[]
+  reviews   Review[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model Category {
+  id    String     @id @default(uuid())
+  name  String     @unique
+  gears GearItem[]
+}
+
+model GearItem {
+  id          String        @id @default(uuid())
+  name        String
+  description String
+  price       Float
+  brand       String
+  stock       Int
+  categoryId  String
+  category    Category      @relation(fields: [categoryId], references: [id])
+  providerId  String
+  provider    User          @relation(fields: [providerId], references: [id])
+  rentals     RentalOrder[]
+  reviews     Review[]
+  isDeleted   Boolean       @default(false)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model RentalOrder {
+  id         String      @id @default(uuid())
+  customerId String
+  customer   User        @relation(fields: [customerId], references: [id])
+  gearId     String
+  gear       GearItem    @relation(fields: [gearId], references: [id])
+  startDate  DateTime
+  endDate    DateTime
+  status     OrderStatus @default(PLACED)
+  payment    Payment?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  transactionId String        @unique
+  rentalOrderId String        @unique
+  rentalOrder   RentalOrder   @relation(fields: [rentalOrderId], references: [id])
+  amount        Float
+  method        String // Stripe or SSLCommerz
+  status        PaymentStatus @default(PENDING)
+  paidAt        DateTime?
+  createdAt     DateTime      @default(now())
+}
+
+model Review {
+  id         String   @id @default(uuid())
+  rating     Int
+  comment    String
+  customerId String
+  customer   User     @relation(fields: [customerId], references: [id])
+  gearId     String
+  gear       GearItem @relation(fields: [gearId], references: [id])
+  createdAt  DateTime @default(now())
+}
