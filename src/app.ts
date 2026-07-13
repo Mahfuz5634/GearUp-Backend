@@ -3,6 +3,8 @@ import cors from 'cors';
 import globalErrorHandler from "./middlewares/globalErrorHandler";
 import notFound from "./middlewares/notFound";
 import {authRoutes } from "./modules/auth/auth.route";
+import { GearRoutes } from "./modules/gear/gear.route";
+import { CategoryRoutes } from "./modules/category/category.route";
 
 const app: Application = express();
 
@@ -15,6 +17,8 @@ app.get('/',(req,res)=>{
 });
 
 app.use('/api/auth',authRoutes)
+app.use('/api/gear',GearRoutes)
+app.use('/api/category',CategoryRoutes)
 
 
 //globalerrorHandler
