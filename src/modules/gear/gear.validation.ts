@@ -15,7 +15,26 @@ const createGearValidationSchema = z.object({
   }),
 });
 
-const updateGearValidationSchema = createGearValidationSchema.deepPartial();
+const updateGearValidationSchema = z.object({
+  body: z.object({
+    name: z.string().min(1, { message: "Name is required" }).optional(),
+    description: z
+      .string()
+      .min(1, {
+        message: "Description is required",
+      })
+      .optional(),
+    price: z.number().optional(),
+    brand: z.string().min(1, { message: "Brand is required" }).optional(),
+    stock: z.number().optional(),
+    categoryId: z
+      .string()
+      .min(1, {
+        message: "Category ID is required",
+      })
+      .optional(),
+  }),
+});
 
 export const GearValidation = {
   createGearValidationSchema,

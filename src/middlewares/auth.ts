@@ -11,12 +11,15 @@ interface AuthRequest extends Request {
 const auth =(...requiredRoles: Role[])=>{
 
     return catchAsync(async(req:AuthRequest,res:Response,next:NextFunction)=>{
-         const token=req.headers.authorization;
+         const authHeader = req.headers.authorization;
 
-         if(!token){
-            throw new Error('You are not authorized!');
+         if(!authHeader){
+            const err = new Error('You are not authorized!') as any;
+            err.statusCode = 401;
+            throw err;
 
          }
+         const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : authHeader;
          const decode = jwt.verify(token,
             config.jwt_access_secret as string
          ) as JwtPayload;
@@ -24,7 +27,9 @@ const auth =(...requiredRoles: Role[])=>{
          const {role} = decode;
 
          if(requiredRoles.length && (!role || !requiredRoles.includes(role as Role))){
-            throw new Error('You do not have permission to access this route')
+            const err = new Error('You do not have permission to access this route') as any;
+            err.statusCode = 403;
+            throw err;
          }
          req.user = decode;
          next();
