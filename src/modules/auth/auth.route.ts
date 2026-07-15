@@ -7,8 +7,14 @@ const router = Router();
 
 router.post(
   "/register",
-  validateRequest(AuthValidation.registerValidationSchema),authController.registerUser
+  validateRequest(AuthValidation.registerValidationSchema),
+  authController.registerUser,
 );
-router.post("/login", validateRequest(AuthValidation.loginValidationSchema),authController.loginUser);
+router.post(
+  "/login",
+  validateRequest(AuthValidation.loginValidationSchema),
+  authController.loginUser,
+);
+router.get("/me", auth(), authController.getMe);
 
 export const authRoutes = router;

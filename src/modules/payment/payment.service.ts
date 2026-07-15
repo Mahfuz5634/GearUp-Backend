@@ -2,28 +2,40 @@ import Stripe from "stripe";
 import config from "../../config/config";
 import { prisma } from "../../lib/prisma";
 
+const stripeSecret = config.stripe_secret_key;
+if (!stripeSecret) {
+  throw new Error("Stripe secret key is not configured.");
+}
 
-
-const stripe = new Stripe(config.stripe_secret_key, {
+const stripe = new Stripe(stripeSecret, {
   apiVersion: "2024-04-10" as any,
 });
 
-const createPaymentIntentIntoDB = async(customerId:string,rentalOrderId:string)=>{
-    const order = await prisma.rentalOrder.findUnique({
-        where:{id:rentalOrderId},
-        include:{gear:true},
-    })
-    if(!order) throw new Error("Rental order not found!")
-    if(order.customerId!=customerId) throw new Error("This is not your order!")
-    if (order.status !== 'CONFIRMED') throw new Error('Order must be CONFIRMED by provider before payment.');
+const createPaymentIntentIntoDB = async (
+  customerId: string,
+  rentalOrderId: string,
+) => {
+  const order = await prisma.rentalOrder.findUnique({
+    where: { id: rentalOrderId },
+    include: { gear: true },
+  });
 
-    const days = Math.ceil((new Date(order.endDate).getTime() - new Date(order.startDate).getTime()) / (1000 * 3600 * 24));
-    const totalAmount = order.gear.price * (days === 0 ? 1 : days);
+  if (!order) throw new Error("Rental order not found!");
+  if (order.customerId !== customerId)
+    throw new Error("This is not your order!");
+  if (order.status !== "CONFIRMED")
+    throw new Error("Order must be CONFIRMED by provider before payment.");
 
-    const paymentIntent = await stripe.paymentIntents.create({
+  const days = Math.ceil(
+    (new Date(order.endDate).getTime() - new Date(order.startDate).getTime()) /
+      (1000 * 3600 * 24),
+  );
+  const totalAmount = order.gear.price * (days === 0 ? 1 : days);
+
+  const paymentIntent = await stripe.paymentIntents.create({
     amount: Math.round(totalAmount * 100),
-    currency: 'usd',
-    payment_method_types: ['card'],
+    currency: "usd",
+    payment_method_types: ["card"],
   });
 
   const payment = await prisma.payment.create({
@@ -31,8 +43,8 @@ const createPaymentIntentIntoDB = async(customerId:string,rentalOrderId:string)=
       transactionId: paymentIntent.id,
       rentalOrderId: order.id,
       amount: totalAmount,
-      method: 'Stripe',
-      status: 'PENDING',
+      method: "Stripe",
+      status: "PENDING",
     },
   });
 
@@ -43,17 +55,23 @@ const createPaymentIntentIntoDB = async(customerId:string,rentalOrderId:string)=
   };
 };
 
+const getMyPaymentHistory = async (customerId: string) => {
+  return await prisma.payment.findMany({
+    where: { rentalOrder: { customerId } },
+    include: { rentalOrder: { include: { gear: true } } },
+    orderBy: { createdAt: "desc" },
+  });
+};
 
 const confirmPaymentInDB = async (transactionId: string) => {
-
   const payment = await prisma.payment.update({
     where: { transactionId },
-    data: { status: 'COMPLETED', paidAt: new Date() },
+    data: { status: "COMPLETED", paidAt: new Date() },
   });
 
   await prisma.rentalOrder.update({
     where: { id: payment.rentalOrderId },
-    data: { status: 'PAID' },
+    data: { status: "PAID" },
   });
 
   return payment;
@@ -62,4 +80,5 @@ const confirmPaymentInDB = async (transactionId: string) => {
 export const PaymentService = {
   createPaymentIntentIntoDB,
   confirmPaymentInDB,
+  getMyPaymentHistory,
 };

@@ -1,20 +1,21 @@
-import { Request, Response } from 'express';
-import { PaymentService } from './payment.service';
-import sendResponse from '../../utils/sendResponse';
-import catchAsync from '../../utils/catchAsync';
-
-
+import { Request, Response } from "express";
+import { PaymentService } from "./payment.service";
+import sendResponse from "../../utils/sendResponse";
+import catchAsync from "../../utils/catchAsync";
 
 const createPaymentIntent = catchAsync(async (req: Request, res: Response) => {
   const customerId = (req as any).user.userId;
   const { rentalOrderId } = req.body;
 
-  const result = await PaymentService.createPaymentIntentIntoDB(customerId, rentalOrderId);
+  const result = await PaymentService.createPaymentIntentIntoDB(
+    customerId,
+    rentalOrderId,
+  );
 
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: 'Payment intent created successfully',
+    message: "Payment intent created successfully",
     data: result,
   });
 });
@@ -26,7 +27,22 @@ const confirmPayment = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: 'Payment confirmed successfully',
+    message: "Payment confirmed successfully",
+    data: result,
+  });
+});
+
+const getMyPaymentHistory = catchAsync(async (req: Request, res: Response) => {
+  const customerId = (req as any).user?.userId;
+  if (!customerId) {
+    throw new Error("Customer ID is required");
+  }
+
+  const result = await PaymentService.getMyPaymentHistory(customerId);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Payment history retrieved successfully",
     data: result,
   });
 });
@@ -34,4 +50,5 @@ const confirmPayment = catchAsync(async (req: Request, res: Response) => {
 export const PaymentController = {
   createPaymentIntent,
   confirmPayment,
+  getMyPaymentHistory,
 };

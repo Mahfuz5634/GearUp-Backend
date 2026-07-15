@@ -34,9 +34,33 @@ const getAllGearFromDB = async(query:any)=>{
 });
 
 return result;
-}   
+}
 
+const getSingleGearFromDB = async (id: string) => {
+  return await prisma.gearItem.findUnique({
+    where: { id, isDeleted: false },
+    include: { category: true, provider: { select: { name: true, email: true } }, reviews: true }
+  });
+};
+
+const updateGearInDB = async (providerId: string, id: string, payload: any) => {
+  const gear = await prisma.gearItem.findUnique({ where: { id } });
+  if (gear?.providerId !== providerId) throw new Error('You can only update your own gear');
+  
+  return await prisma.gearItem.update({ where: { id }, data: payload });
+};
+
+const deleteGearFromDB = async (providerId: string, id: string) => {
+  const gear = await prisma.gearItem.findUnique({ where: { id } });
+  if (gear?.providerId !== providerId) throw new Error('You can only delete your own gear');
+  
+ 
+  return await prisma.gearItem.update({ where: { id }, data: { isDeleted: true } });
+};
 export const GearService ={
     createGearIntoDB,
-    getAllGearFromDB
+    getAllGearFromDB,
+    getSingleGearFromDB,
+    updateGearInDB,
+    deleteGearFromDB
 }

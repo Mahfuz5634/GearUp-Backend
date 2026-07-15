@@ -15,6 +15,9 @@ const createGearValidationSchema = z.object({
   }),
 });
 
+const updateGearValidationSchema = createGearValidationSchema.deepPartial();
+
 export const GearValidation = {
   createGearValidationSchema,
+  updateGearValidationSchema,
 };
