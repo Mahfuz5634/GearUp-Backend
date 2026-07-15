@@ -11,7 +11,7 @@ const createRentalValidationSchema = z.object({
 const updateRentalStatusValidationSchema = z.object({
   body: z.object({
     status: z.enum(["CONFIRMED", "PICKED_UP", "RETURNED", "CANCELLED"], {
-      message: "Status is required",
+      message: "Status must be one of: CONFIRMED, PICKED_UP, RETURNED, CANCELLED",
     }),
   }),
 });
