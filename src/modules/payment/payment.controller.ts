@@ -32,17 +32,26 @@ const confirmPayment = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getMyPaymentHistory = catchAsync(async (req: Request, res: Response) => {
-  const customerId = (req as any).user?.userId;
-  if (!customerId) {
-    throw new Error("Customer ID is required");
-  }
+const getMyPayments = catchAsync(async (req: Request, res: Response) => {
+  const userId = (req as any).user.userId;
+  const result = await PaymentService.getMyPaymentsFromDB(userId);
 
-  const result = await PaymentService.getMyPaymentHistory(customerId);
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: "Payment history retrieved successfully",
+    message: "Payments retrieved successfully",
+    data: result,
+  });
+});
+
+const getPaymentById = catchAsync(async (req: Request, res: Response) => {
+  const userId = (req as any).user.userId;
+  const result = await PaymentService.getPaymentByIdFromDB(req.params.id, userId);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Payment details retrieved successfully",
     data: result,
   });
 });
@@ -50,5 +59,6 @@ const getMyPaymentHistory = catchAsync(async (req: Request, res: Response) => {
 export const PaymentController = {
   createPaymentIntent,
   confirmPayment,
-  getMyPaymentHistory,
+  getMyPayments,
+  getPaymentById,
 };

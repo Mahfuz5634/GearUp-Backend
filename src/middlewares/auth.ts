@@ -3,39 +3,31 @@ import { Role } from "../../generated/prisma/enums";
 import catchAsync from "../utils/catchAsync";
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import config from "../config/config";
+import { AppError } from "../errors/AppError";
 
 interface AuthRequest extends Request {
     user?: JwtPayload;
 }
 
-const auth =(...requiredRoles: Role[])=>{
+const auth = (...requiredRoles: Role[]) => {
+  return catchAsync(async (req: AuthRequest, res: Response, next: NextFunction) => {
+    const authHeader = req.headers.authorization;
 
-    return catchAsync(async(req:AuthRequest,res:Response,next:NextFunction)=>{
-         const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      throw new AppError(401, 'You are not authorized!');
+    }
 
-         if(!authHeader){
-            const err = new Error('You are not authorized!') as any;
-            err.statusCode = 401;
-            throw err;
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : authHeader;
+    const decode = jwt.verify(token, config.jwt_access_secret as string) as JwtPayload;
+    const { role } = decode;
 
-         }
-         const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : authHeader;
-         const decode = jwt.verify(token,
-            config.jwt_access_secret as string
-         ) as JwtPayload;
+    if (requiredRoles.length && (!role || !requiredRoles.includes(role as Role))) {
+      throw new AppError(403, 'You do not have permission to access this route');
+    }
 
-         const {role} = decode;
-
-         if(requiredRoles.length && (!role || !requiredRoles.includes(role as Role))){
-            const err = new Error('You do not have permission to access this route') as any;
-            err.statusCode = 403;
-            throw err;
-         }
-         req.user = decode;
-         next();
-
-
-    });
-
+    req.user = decode;
+    next();
+  });
 };
+
 export default auth;

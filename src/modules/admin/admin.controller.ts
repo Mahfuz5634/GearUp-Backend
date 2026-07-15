@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { AdminService } from "./admin.service";
+import { AppError } from "../../errors/AppError";
 
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   const result = await AdminService.getAllUsersFromDB();
@@ -14,18 +15,10 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateUserStatus = catchAsync(async (req: Request, res: Response) => {
-  const userId = Array.isArray(req.params.id)
-    ? req.params.id[0]
-    : req.params.id;
+  const userId = req.params.id;
+  if (!userId) throw new AppError(400, "User ID is required");
 
-  if (!userId) {
-    throw new Error("User ID is required");
-  }
-
-  const result = await AdminService.updateUserStatusInDB(
-    userId,
-    req.body.status,
-  );
+  const result = await AdminService.updateUserStatusInDB(userId, req.body.status);
   sendResponse(res, {
     statusCode: 200,
     success: true,
