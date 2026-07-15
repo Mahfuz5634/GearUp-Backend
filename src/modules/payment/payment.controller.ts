@@ -2,12 +2,13 @@ import { Request, Response } from "express";
 import { PaymentService } from "./payment.service";
 import sendResponse from "../../utils/sendResponse";
 import catchAsync from "../../utils/catchAsync";
+import { AppError } from "../../errors/AppError";
 
-const createPaymentIntent = catchAsync(async (req: Request, res: Response) => {
+const createCheckoutSession = catchAsync(async (req: Request, res: Response) => {
   const customerId = (req as any).user.userId;
   const { rentalOrderId } = req.body;
 
-  const result = await PaymentService.createPaymentIntentIntoDB(
+  const result = await PaymentService.createCheckoutSessionIntoDB(
     customerId,
     rentalOrderId,
   );
@@ -15,13 +16,28 @@ const createPaymentIntent = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: "Payment intent created successfully",
+    message: "Checkout session created successfully",
     data: result,
   });
 });
 
+const handleWebhook = catchAsync(async (req: Request, res: Response) => {
+  const signature = req.headers["stripe-signature"] as string;
+  if (!signature) throw new AppError(400, "Missing stripe-signature header");
+
+  const rawBody = req.body;
+  if (!rawBody || !Buffer.isBuffer(rawBody)) {
+    throw new AppError(400, "Invalid request body");
+  }
+
+  const result = await PaymentService.handleStripeWebhook(rawBody, signature);
+  res.status(200).json(result);
+});
+
 const confirmPayment = catchAsync(async (req: Request, res: Response) => {
   const { transactionId } = req.body;
+  if (!transactionId) throw new AppError(400, "Transaction ID is required");
+
   const result = await PaymentService.confirmPaymentInDB(transactionId);
 
   sendResponse(res, {
@@ -46,7 +62,10 @@ const getMyPayments = catchAsync(async (req: Request, res: Response) => {
 
 const getPaymentById = catchAsync(async (req: Request, res: Response) => {
   const userId = (req as any).user.userId;
-  const result = await PaymentService.getPaymentByIdFromDB(req.params.id as string, userId);
+  const result = await PaymentService.getPaymentByIdFromDB(
+    req.params.id as string,
+    userId,
+  );
 
   sendResponse(res, {
     statusCode: 200,
@@ -57,7 +76,8 @@ const getPaymentById = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const PaymentController = {
-  createPaymentIntent,
+  createCheckoutSession,
+  handleWebhook,
   confirmPayment,
   getMyPayments,
   getPaymentById,

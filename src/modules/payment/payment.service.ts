@@ -12,13 +12,13 @@ const stripe = new Stripe(stripeSecret, {
   apiVersion: "2024-04-10" as any,
 });
 
-const createPaymentIntentIntoDB = async (
+const createCheckoutSessionIntoDB = async (
   customerId: string,
   rentalOrderId: string,
 ) => {
   const order = await prisma.rentalOrder.findUnique({
     where: { id: rentalOrderId },
-    include: { gear: true },
+    include: { gear: true, customer: true },
   });
 
   if (!order) throw new AppError(404, "Rental order not found!");
@@ -27,21 +27,59 @@ const createPaymentIntentIntoDB = async (
   if (order.status !== "CONFIRMED")
     throw new AppError(400, "Order must be CONFIRMED by provider before payment.");
 
+  const existingPayment = await prisma.payment.findFirst({
+    where: { rentalOrderId, status: "PENDING" },
+  });
+
+  if (existingPayment) {
+    try {
+      const existingSession = await stripe.checkout.sessions.retrieve(existingPayment.transactionId);
+      if (existingSession.url) {
+        return {
+          checkoutUrl: existingSession.url,
+          transactionId: existingPayment.transactionId,
+          paymentId: existingPayment.id,
+        };
+      }
+    } catch {
+      await prisma.payment.delete({ where: { id: existingPayment.id } });
+    }
+  }
+
   const days = Math.ceil(
     (new Date(order.endDate).getTime() - new Date(order.startDate).getTime()) /
       (1000 * 3600 * 24),
   );
   const totalAmount = order.gear.price * (days === 0 ? 1 : days);
 
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: Math.round(totalAmount * 100),
-    currency: "usd",
+  const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
+    mode: "payment",
+    customer_email: order.customer.email,
+    line_items: [
+      {
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: order.gear.name,
+            description: `Rental from ${new Date(order.startDate).toLocaleDateString()} to ${new Date(order.endDate).toLocaleDateString()}`,
+          },
+          unit_amount: Math.round(totalAmount * 100),
+        },
+        quantity: 1,
+      },
+    ],
+    metadata: {
+      rentalOrderId: order.id,
+      customerId,
+    },
+    success_url: `${config.frontend_url || "http://localhost:5173"}/payments/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${config.frontend_url || "http://localhost:5173"}/payments/cancel?session_id={CHECKOUT_SESSION_ID}`,
   });
 
   const payment = await prisma.payment.create({
     data: {
-      transactionId: paymentIntent.id,
+      transactionId: session.id,
       rentalOrderId: order.id,
       amount: totalAmount,
       method: "Stripe",
@@ -50,18 +88,39 @@ const createPaymentIntentIntoDB = async (
   });
 
   return {
-    clientSecret: paymentIntent.client_secret,
-    transactionId: paymentIntent.id,
+    checkoutUrl: session.url,
+    transactionId: session.id,
     paymentId: payment.id,
   };
 };
 
-const getMyPaymentsFromDB = async (userId: string) => {
-  return await prisma.payment.findMany({
-    where: { rentalOrder: { customerId: userId } },
-    include: { rentalOrder: { include: { gear: true } } },
-    orderBy: { createdAt: "desc" },
-  });
+const handleStripeWebhook = async (rawBody: Buffer, signature: string) => {
+  const webhookSecret = config.stripe_webhook_secret;
+  if (!webhookSecret) {
+    throw new AppError(500, "Stripe webhook secret not configured");
+  }
+
+  let event: Stripe.Event;
+  try {
+    event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
+  } catch {
+    throw new AppError(400, "Invalid webhook signature");
+  }
+
+  if (event.type === "checkout.session.completed") {
+    const session = event.data.object as Stripe.Checkout.Session;
+    await confirmPaymentBySessionId(session.id);
+  }
+
+  if (event.type === "checkout.session.expired") {
+    const session = event.data.object as Stripe.Checkout.Session;
+    await prisma.payment.updateMany({
+      where: { transactionId: session.id, status: "PENDING" },
+      data: { status: "FAILED" },
+    });
+  }
+
+  return { received: true };
 };
 
 const confirmPaymentInDB = async (transactionId: string) => {
@@ -72,17 +131,42 @@ const confirmPaymentInDB = async (transactionId: string) => {
   if (!payment) throw new AppError(404, "Payment not found!");
   if (payment.status !== "PENDING") throw new AppError(400, "Payment is not in PENDING status");
 
-  await prisma.payment.update({
-    where: { transactionId },
-    data: { status: "COMPLETED", paidAt: new Date() },
-  });
+  const session = await stripe.checkout.sessions.retrieve(transactionId);
 
-  await prisma.rentalOrder.update({
-    where: { id: payment.rentalOrderId },
-    data: { status: "PAID" },
-  });
+  if (session.payment_status !== "paid" && session.status !== "complete") {
+    throw new AppError(400, "Payment has not been completed on Stripe");
+  }
+
+  await confirmPaymentBySessionId(transactionId);
 
   return payment;
+};
+
+const confirmPaymentBySessionId = async (sessionId: string) => {
+  const payment = await prisma.payment.findUnique({
+    where: { transactionId: sessionId },
+  });
+
+  if (!payment || payment.status !== "PENDING") return;
+
+  await prisma.$transaction([
+    prisma.payment.update({
+      where: { transactionId: sessionId },
+      data: { status: "COMPLETED", paidAt: new Date() },
+    }),
+    prisma.rentalOrder.update({
+      where: { id: payment.rentalOrderId },
+      data: { status: "PAID" },
+    }),
+  ]);
+};
+
+const getMyPaymentsFromDB = async (userId: string) => {
+  return await prisma.payment.findMany({
+    where: { rentalOrder: { customerId: userId } },
+    include: { rentalOrder: { include: { gear: true } } },
+    orderBy: { createdAt: "desc" },
+  });
 };
 
 const getPaymentByIdFromDB = async (paymentId: string, userId: string) => {
@@ -111,7 +195,8 @@ const getPaymentByIdFromDB = async (paymentId: string, userId: string) => {
 };
 
 export const PaymentService = {
-  createPaymentIntentIntoDB,
+  createCheckoutSessionIntoDB,
+  handleStripeWebhook,
   confirmPaymentInDB,
   getMyPaymentsFromDB,
   getPaymentByIdFromDB,
