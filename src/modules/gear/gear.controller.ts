@@ -4,7 +4,8 @@ import { GearService } from "./gear.service";
 import sendResponse from "../../utils/sendResponse";
 
 const getSingleGear = catchAsync(async (req: Request, res: Response) => {
-  const result = await GearService.getSingleGearFromDB(req.params.id);
+  const gearId = req.params.id as string;
+  const result = await GearService.getSingleGearFromDB(gearId);
 
   sendResponse(res, {
     statusCode: 200,

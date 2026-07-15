@@ -46,7 +46,7 @@ const getMyPayments = catchAsync(async (req: Request, res: Response) => {
 
 const getPaymentById = catchAsync(async (req: Request, res: Response) => {
   const userId = (req as any).user.userId;
-  const result = await PaymentService.getPaymentByIdFromDB(req.params.id, userId);
+  const result = await PaymentService.getPaymentByIdFromDB(req.params.id as string, userId);
 
   sendResponse(res, {
     statusCode: 200,

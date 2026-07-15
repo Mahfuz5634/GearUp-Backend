@@ -1,4 +1,4 @@
-import { OrderStatus } from "../../generated/prisma/enums";
+import { OrderStatus } from "../../../generated/prisma/enums";
 import { AppError } from "../../errors/AppError";
 import { prisma } from "../../lib/prisma";
 import { RentalService } from "../rental/rental.service";

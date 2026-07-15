@@ -16,7 +16,7 @@ const createGear = catchAsync(async (req: Request, res: Response) => {
 
 const updateGear = catchAsync(async (req: Request, res: Response) => {
   const providerId = (req as any).user.userId;
-  const result = await ProviderService.updateGearInDB(providerId, req.params.id, req.body);
+  const result = await ProviderService.updateGearInDB(providerId, req.params.id as string, req.body);
   sendResponse(res, {
     statusCode: 200,
     success: true,
@@ -27,7 +27,7 @@ const updateGear = catchAsync(async (req: Request, res: Response) => {
 
 const deleteGear = catchAsync(async (req: Request, res: Response) => {
   const providerId = (req as any).user.userId;
-  const result = await ProviderService.deleteGearFromDB(providerId, req.params.id);
+  const result = await ProviderService.deleteGearFromDB(providerId, req.params.id as string);
   sendResponse(res, {
     statusCode: 200,
     success: true,
@@ -60,7 +60,7 @@ const getProviderOrders = catchAsync(async (req: Request, res: Response) => {
 
 const updateOrderStatus = catchAsync(async (req: Request, res: Response) => {
   const providerId = (req as any).user.userId;
-  const result = await ProviderService.updateOrderStatusInDB(req.params.id, providerId, req.body.status);
+  const result = await ProviderService.updateOrderStatusInDB(req.params.id as string, providerId, req.body.status);
   sendResponse(res, {
     statusCode: 200,
     success: true,

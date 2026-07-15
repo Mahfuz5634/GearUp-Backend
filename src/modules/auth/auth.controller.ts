@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import catchAsync from "../../utils/catchAsync";
 import { AuthService } from "./auth.service";
 import sendResponse from "../../utils/sendResponse";
+import { AppError } from "../../errors/AppError";
 
 const registerUser = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.registerUserDB(req.body);
@@ -27,9 +28,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
 
 const getMe = catchAsync(async (req: Request, res: Response) => {
   const userId = (req as any).user?.userId;
-  if (!userId) {
-    throw new Error("User ID is required");
-  }
+  if (!userId) throw new AppError(401, "You are not authenticated");
 
   const result = await AuthService.getMe(userId);
   sendResponse(res, {

@@ -17,13 +17,13 @@ const getMyRentals = catchAsync(async (req: Request, res: Response) => {
 
 const getRentalById = catchAsync(async (req: Request, res: Response) => {
   const userId = (req as any).user.userId;
-  const result = await RentalService.getRentalByIdFromDB(req.params.id, userId);
+  const result = await RentalService.getRentalByIdFromDB(req.params.id as string, userId);
   sendResponse(res, { statusCode: 200, success: true, message: "Rental details retrieved", data: result });
 });
 
 const cancelRental = catchAsync(async (req: Request, res: Response) => {
   const customerId = (req as any).user.userId;
-  const result = await RentalService.cancelRentalInDB(req.params.id, customerId);
+  const result = await RentalService.cancelRentalInDB(req.params.id as string, customerId);
   sendResponse(res, { statusCode: 200, success: true, message: "Rental order cancelled", data: result });
 });
 
