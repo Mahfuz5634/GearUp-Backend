@@ -1,14 +1,5 @@
-declare const registerUserDB: (payload: any) => Promise<{
-    id: string;
-    name: string;
-    email: string;
-    role: import("../../../generated/prisma/enums").Role;
-    status: string;
-    createdAt: Date;
-    updatedAt: Date;
-}>;
-declare const loginUser: (payload: any) => Promise<{
-    user: {
+export declare const AuthService: {
+    registerUserDB: (payload: any) => Promise<{
         id: string;
         name: string;
         email: string;
@@ -16,12 +7,27 @@ declare const loginUser: (payload: any) => Promise<{
         status: string;
         createdAt: Date;
         updatedAt: Date;
-    };
-    accessToken: string;
-}>;
-export declare const AuthService: {
-    registerUserDB: typeof registerUserDB;
-    loginUser: typeof loginUser;
+    }>;
+    loginUser: (payload: any) => Promise<{
+        user: {
+            id: string;
+            name: string;
+            email: string;
+            role: import("../../../generated/prisma/enums").Role;
+            status: string;
+            createdAt: Date;
+            updatedAt: Date;
+        };
+        accessToken: string;
+    }>;
+    getMe: (userId: string) => Promise<{
+        id: string;
+        name: string;
+        email: string;
+        role: import("../../../generated/prisma/enums").Role;
+        status: string;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
 };
-export {};
 //# sourceMappingURL=auth.service.d.ts.map

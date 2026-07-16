@@ -1,10 +1,20 @@
+import { AppError } from "../errors/AppError";
 const globalErrorHandler = (err, req, res, next) => {
-    const statusCode = err.statusCode || 500;
-    const message = err.message || "something went wrong";
+    let statusCode = err.statusCode || 500;
+    let message = err.message || "Something went wrong";
+    let stack;
+    if (err instanceof AppError) {
+        statusCode = err.statusCode;
+        message = err.message;
+    }
+    if (process.env.NODE_ENV === "development") {
+        stack = err.stack;
+    }
     res.status(statusCode).json({
         success: false,
         message,
-        errorDetails: err,
+        statusCode,
+        stack,
     });
 };
 export default globalErrorHandler;

@@ -1,13 +1,13 @@
 import catchAsync from "../../utils/catchAsync";
 import { GearService } from "./gear.service";
 import sendResponse from "../../utils/sendResponse";
-const createGear = catchAsync(async (req, res) => {
-    const providerId = req.user.userId;
-    const result = await GearService.createGearIntoDB(providerId, req.body);
+const getSingleGear = catchAsync(async (req, res) => {
+    const gearId = req.params.id;
+    const result = await GearService.getSingleGearFromDB(gearId);
     sendResponse(res, {
-        statusCode: 201,
+        statusCode: 200,
         success: true,
-        message: "Gear added successfully",
+        message: "Gear retrieved successfully",
         data: result,
     });
 });
@@ -16,12 +16,12 @@ const getAllGears = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: 200,
         success: true,
-        message: 'Gears retrieved successfully',
+        message: "Gears retrieved successfully",
         data: result,
     });
 });
 export const GearController = {
-    createGear,
-    getAllGears
+    getAllGears,
+    getSingleGear,
 };
 //# sourceMappingURL=gear.controller.js.map

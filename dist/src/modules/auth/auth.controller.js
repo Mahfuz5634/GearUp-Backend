@@ -1,6 +1,7 @@
 import catchAsync from "../../utils/catchAsync";
 import { AuthService } from "./auth.service";
 import sendResponse from "../../utils/sendResponse";
+import { AppError } from "../../errors/AppError";
 const registerUser = catchAsync(async (req, res) => {
     const result = await AuthService.registerUserDB(req.body);
     sendResponse(res, {
@@ -15,12 +16,25 @@ const loginUser = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: 200,
         success: true,
-        message: 'User logged in successfully',
+        message: "User logged in successfully",
+        data: result,
+    });
+});
+const getMe = catchAsync(async (req, res) => {
+    const userId = req.user?.userId;
+    if (!userId)
+        throw new AppError(401, "You are not authenticated");
+    const result = await AuthService.getMe(userId);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "User profile retrieved successfully",
         data: result,
     });
 });
 export const authController = {
     registerUser,
     loginUser,
+    getMe,
 };
 //# sourceMappingURL=auth.controller.js.map

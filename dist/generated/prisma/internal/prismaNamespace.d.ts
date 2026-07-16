@@ -61,9 +61,9 @@ export type InputJsonObject = runtime.InputJsonObject;
 export type InputJsonArray = runtime.InputJsonArray;
 export type InputJsonValue = runtime.InputJsonValue;
 export declare const NullTypes: {
-    DbNull: (new (secret: never) => typeof runtime.DbNull);
-    JsonNull: (new (secret: never) => typeof runtime.JsonNull);
-    AnyNull: (new (secret: never) => typeof runtime.AnyNull);
+    DbNull: new (secret: never) => typeof runtime.DbNull;
+    JsonNull: new (secret: never) => typeof runtime.JsonNull;
+    AnyNull: new (secret: never) => typeof runtime.AnyNull;
 };
 /**
  * Helper for filtering JSON entries that have `null` on the database (empty on the db)
@@ -180,9 +180,9 @@ type _Record<K extends keyof any, T> = {
 type NoExpand<T> = T extends unknown ? T : never;
 export type AtLeast<O extends object, K extends string> = NoExpand<O extends unknown ? (K extends keyof O ? {
     [P in K]: O[P];
-} & O : O) | ({
+} & O : O) | {
     [P in keyof O as P extends K ? P : never]-?: O[P];
-} & O) : never>;
+} & O : never>;
 type _Strict<U, _U = U> = U extends unknown ? U & OptionalFlat<_Record<Exclude<Keys<_U>, keyof U>, never>> : never;
 export type Strict<U extends object> = ComputeRaw<_Strict<U>>;
 /** End Helper Types for "Merge" **/
@@ -231,12 +231,12 @@ export type ExcludeUnderscoreKeys<T extends string> = T extends `_${string}` ? n
 export type FieldRef<Model, FieldType> = runtime.FieldRef<Model, FieldType>;
 type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRef<Model, FieldType>;
 export declare const ModelName: {
-    readonly User: 'User';
-    readonly Category: 'Category';
-    readonly GearItem: 'GearItem';
-    readonly RentalOrder: 'RentalOrder';
-    readonly Payment: 'Payment';
-    readonly Review: 'Review';
+    readonly User: "User";
+    readonly Category: "Category";
+    readonly GearItem: "GearItem";
+    readonly RentalOrder: "RentalOrder";
+    readonly Payment: "Payment";
+    readonly Review: "Review";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export interface TypeMapCb<GlobalOmitOptions = {}> extends runtime.Types.Utils.Fn<{
@@ -725,86 +725,86 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
  * Enums
  */
 export declare const TransactionIsolationLevel: {
-    readonly ReadUncommitted: 'ReadUncommitted';
-    readonly ReadCommitted: 'ReadCommitted';
-    readonly RepeatableRead: 'RepeatableRead';
-    readonly Serializable: 'Serializable';
+    readonly ReadUncommitted: "ReadUncommitted";
+    readonly ReadCommitted: "ReadCommitted";
+    readonly RepeatableRead: "RepeatableRead";
+    readonly Serializable: "Serializable";
 };
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
 export declare const UserScalarFieldEnum: {
-    readonly id: 'id';
-    readonly name: 'name';
-    readonly email: 'email';
-    readonly password: 'password';
-    readonly role: 'role';
-    readonly status: 'status';
-    readonly createdAt: 'createdAt';
-    readonly updatedAt: 'updatedAt';
+    readonly id: "id";
+    readonly name: "name";
+    readonly email: "email";
+    readonly password: "password";
+    readonly role: "role";
+    readonly status: "status";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
 };
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum];
 export declare const CategoryScalarFieldEnum: {
-    readonly id: 'id';
-    readonly name: 'name';
+    readonly id: "id";
+    readonly name: "name";
 };
 export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum];
 export declare const GearItemScalarFieldEnum: {
-    readonly id: 'id';
-    readonly name: 'name';
-    readonly description: 'description';
-    readonly price: 'price';
-    readonly brand: 'brand';
-    readonly stock: 'stock';
-    readonly categoryId: 'categoryId';
-    readonly providerId: 'providerId';
-    readonly isDeleted: 'isDeleted';
-    readonly createdAt: 'createdAt';
-    readonly updatedAt: 'updatedAt';
+    readonly id: "id";
+    readonly name: "name";
+    readonly description: "description";
+    readonly price: "price";
+    readonly brand: "brand";
+    readonly stock: "stock";
+    readonly categoryId: "categoryId";
+    readonly providerId: "providerId";
+    readonly isDeleted: "isDeleted";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
 };
 export type GearItemScalarFieldEnum = (typeof GearItemScalarFieldEnum)[keyof typeof GearItemScalarFieldEnum];
 export declare const RentalOrderScalarFieldEnum: {
-    readonly id: 'id';
-    readonly customerId: 'customerId';
-    readonly gearId: 'gearId';
-    readonly startDate: 'startDate';
-    readonly endDate: 'endDate';
-    readonly status: 'status';
-    readonly createdAt: 'createdAt';
-    readonly updatedAt: 'updatedAt';
+    readonly id: "id";
+    readonly customerId: "customerId";
+    readonly gearId: "gearId";
+    readonly startDate: "startDate";
+    readonly endDate: "endDate";
+    readonly status: "status";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
 };
 export type RentalOrderScalarFieldEnum = (typeof RentalOrderScalarFieldEnum)[keyof typeof RentalOrderScalarFieldEnum];
 export declare const PaymentScalarFieldEnum: {
-    readonly id: 'id';
-    readonly transactionId: 'transactionId';
-    readonly rentalOrderId: 'rentalOrderId';
-    readonly amount: 'amount';
-    readonly method: 'method';
-    readonly status: 'status';
-    readonly paidAt: 'paidAt';
-    readonly createdAt: 'createdAt';
+    readonly id: "id";
+    readonly transactionId: "transactionId";
+    readonly rentalOrderId: "rentalOrderId";
+    readonly amount: "amount";
+    readonly method: "method";
+    readonly status: "status";
+    readonly paidAt: "paidAt";
+    readonly createdAt: "createdAt";
 };
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum];
 export declare const ReviewScalarFieldEnum: {
-    readonly id: 'id';
-    readonly rating: 'rating';
-    readonly comment: 'comment';
-    readonly customerId: 'customerId';
-    readonly gearId: 'gearId';
-    readonly createdAt: 'createdAt';
+    readonly id: "id";
+    readonly rating: "rating";
+    readonly comment: "comment";
+    readonly customerId: "customerId";
+    readonly gearId: "gearId";
+    readonly createdAt: "createdAt";
 };
 export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum];
 export declare const SortOrder: {
-    readonly asc: 'asc';
-    readonly desc: 'desc';
+    readonly asc: "asc";
+    readonly desc: "desc";
 };
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder];
 export declare const QueryMode: {
-    readonly default: 'default';
-    readonly insensitive: 'insensitive';
+    readonly default: "default";
+    readonly insensitive: "insensitive";
 };
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode];
 export declare const NullsOrder: {
-    readonly first: 'first';
-    readonly last: 'last';
+    readonly first: "first";
+    readonly last: "last";
 };
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder];
 /**
@@ -876,7 +876,7 @@ export type ListEnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType
 export type BatchPayload = {
     count: number;
 };
-export declare const defineExtension: runtime.Types.Extensions.ExtendsHook<"define", TypeMapCb, runtime.Types.Extensions.DefaultArgs>;
+export declare const defineExtension: runtime.ExtendsHook<"define", TypeMapCb<{}>, runtime.DefaultArgs, TypeMap<runtime.InternalArgs & runtime.DefaultArgs, {}>>;
 export type DefaultPrismaClient = PrismaClient;
 export type ErrorFormat = 'pretty' | 'colorless' | 'minimal';
 export type PrismaClientOptions = ({

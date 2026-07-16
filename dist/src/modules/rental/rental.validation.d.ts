@@ -10,10 +10,10 @@ export declare const RentalValidation: {
     updateRentalStatusValidationSchema: z.ZodObject<{
         body: z.ZodObject<{
             status: z.ZodEnum<{
-                CANCELLED: "CANCELLED";
                 CONFIRMED: "CONFIRMED";
                 PICKED_UP: "PICKED_UP";
                 RETURNED: "RETURNED";
+                CANCELLED: "CANCELLED";
             }>;
         }, z.core.$strip>;
     }, z.core.$strip>;

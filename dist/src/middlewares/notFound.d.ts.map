@@ -1,1 +1,1 @@
-{"version":3,"file":"notFound.d.ts","sourceRoot":"","sources":["../../../src/middlewares/notFound.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,YAAY,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AAG1D,QAAA,MAAM,QAAQ,QAAQ,OAAO,OAAK,QAAQ,QAAM,YAAY,SAM3D,CAAC;eAEa,QAAQ"}
+{"version":3,"file":"notFound.d.ts","sourceRoot":"","sources":["../../../src/middlewares/notFound.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,YAAY,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AAE1D,QAAA,MAAM,QAAQ,QAAS,OAAO,OAAO,QAAQ,QAAQ,YAAY,SAMhE,CAAC;AAEF,eAAe,QAAQ,CAAC"}

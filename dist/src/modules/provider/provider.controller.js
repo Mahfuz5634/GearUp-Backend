@@ -1,73 +1,67 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProviderController = void 0;
-const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
-const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
-const provider_service_1 = require("./provider.service");
-const createGear = (0, catchAsync_1.default)(async (req, res) => {
+import catchAsync from "../../utils/catchAsync";
+import sendResponse from "../../utils/sendResponse";
+import { ProviderService } from "./provider.service";
+const createGear = catchAsync(async (req, res) => {
     const providerId = req.user.userId;
-    const result = await provider_service_1.ProviderService.createGearIntoDB(providerId, req.body);
-    (0, sendResponse_1.default)(res, {
+    const result = await ProviderService.createGearIntoDB(providerId, req.body);
+    sendResponse(res, {
         statusCode: 201,
         success: true,
         message: "Gear added successfully",
         data: result,
     });
 });
-const updateGear = (0, catchAsync_1.default)(async (req, res) => {
+const updateGear = catchAsync(async (req, res) => {
     const providerId = req.user.userId;
-    const result = await provider_service_1.ProviderService.updateGearInDB(providerId, req.params.id, req.body);
-    (0, sendResponse_1.default)(res, {
+    const result = await ProviderService.updateGearInDB(providerId, req.params.id, req.body);
+    sendResponse(res, {
         statusCode: 200,
         success: true,
         message: "Gear updated successfully",
         data: result,
     });
 });
-const deleteGear = (0, catchAsync_1.default)(async (req, res) => {
+const deleteGear = catchAsync(async (req, res) => {
     const providerId = req.user.userId;
-    const result = await provider_service_1.ProviderService.deleteGearFromDB(providerId, req.params.id);
-    (0, sendResponse_1.default)(res, {
+    const result = await ProviderService.deleteGearFromDB(providerId, req.params.id);
+    sendResponse(res, {
         statusCode: 200,
         success: true,
         message: "Gear deleted successfully",
         data: result,
     });
 });
-const getMyGear = (0, catchAsync_1.default)(async (req, res) => {
+const getMyGear = catchAsync(async (req, res) => {
     const providerId = req.user.userId;
-    const result = await provider_service_1.ProviderService.getMyGearFromDB(providerId);
-    (0, sendResponse_1.default)(res, {
+    const result = await ProviderService.getMyGearFromDB(providerId);
+    sendResponse(res, {
         statusCode: 200,
         success: true,
         message: "Your gear retrieved successfully",
         data: result,
     });
 });
-const getProviderOrders = (0, catchAsync_1.default)(async (req, res) => {
+const getProviderOrders = catchAsync(async (req, res) => {
     const providerId = req.user.userId;
-    const result = await provider_service_1.ProviderService.getProviderOrdersFromDB(providerId);
-    (0, sendResponse_1.default)(res, {
+    const result = await ProviderService.getProviderOrdersFromDB(providerId);
+    sendResponse(res, {
         statusCode: 200,
         success: true,
         message: "Incoming orders retrieved successfully",
         data: result,
     });
 });
-const updateOrderStatus = (0, catchAsync_1.default)(async (req, res) => {
+const updateOrderStatus = catchAsync(async (req, res) => {
     const providerId = req.user.userId;
-    const result = await provider_service_1.ProviderService.updateOrderStatusInDB(req.params.id, providerId, req.body.status);
-    (0, sendResponse_1.default)(res, {
+    const result = await ProviderService.updateOrderStatusInDB(req.params.id, providerId, req.body.status);
+    sendResponse(res, {
         statusCode: 200,
         success: true,
         message: "Order status updated successfully",
         data: result,
     });
 });
-exports.ProviderController = {
+export const ProviderController = {
     createGear,
     updateGear,
     deleteGear,

@@ -1,41 +1,59 @@
-declare const createGearIntoDB: (providerId: string, payload: any) => Promise<{
-    id: string;
-    name: string;
-    description: string;
-    price: number;
-    brand: string;
-    stock: number;
-    categoryId: string;
-    providerId: string;
-    isDeleted: boolean;
-    createdAt: Date;
-    updatedAt: Date;
-}>;
-declare const getAllGearFromDB: (query: any) => Promise<({
-    category: {
+export declare const GearService: {
+    getAllGearFromDB: (query: any) => Promise<({
+        category: {
+            id: string;
+            name: string;
+        };
+        provider: {
+            name: string;
+            email: string;
+        };
+    } & {
         id: string;
         name: string;
-    };
-    provider: {
-        email: string;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string;
+        price: number;
+        brand: string;
+        stock: number;
+        categoryId: string;
+        providerId: string;
+        isDeleted: boolean;
+    })[]>;
+    getSingleGearFromDB: (id: string) => Promise<({
+        reviews: ({
+            customer: {
+                name: string;
+            };
+        } & {
+            id: string;
+            createdAt: Date;
+            gearId: string;
+            customerId: string;
+            rating: number;
+            comment: string;
+        })[];
+        category: {
+            id: string;
+            name: string;
+        };
+        provider: {
+            name: string;
+            email: string;
+        };
+    } & {
+        id: string;
         name: string;
-    };
-} & {
-    id: string;
-    name: string;
-    description: string;
-    price: number;
-    brand: string;
-    stock: number;
-    categoryId: string;
-    providerId: string;
-    isDeleted: boolean;
-    createdAt: Date;
-    updatedAt: Date;
-})[]>;
-export declare const GearService: {
-    createGearIntoDB: typeof createGearIntoDB;
-    getAllGearFromDB: typeof getAllGearFromDB;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string;
+        price: number;
+        brand: string;
+        stock: number;
+        categoryId: string;
+        providerId: string;
+        isDeleted: boolean;
+    }) | null>;
 };
-export {};
 //# sourceMappingURL=gear.service.d.ts.map

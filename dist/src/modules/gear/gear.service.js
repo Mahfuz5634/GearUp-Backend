@@ -1,14 +1,4 @@
 import { prisma } from "../../lib/prisma";
-const createGearIntoDB = async (providerId, payload) => {
-    const result = await prisma.gearItem.create({
-        data: {
-            ...payload,
-            providerId,
-        },
-    });
-    return result;
-};
-//all gear
 const getAllGearFromDB = async (query) => {
     const { category, brand, minPrice, maxPrice } = query;
     const whereConditions = { isDeleted: false };
@@ -28,12 +18,23 @@ const getAllGearFromDB = async (query) => {
         include: {
             category: true,
             provider: { select: { name: true, email: true } }
-        }
+        },
+        orderBy: { createdAt: "desc" },
     });
     return result;
 };
+const getSingleGearFromDB = async (id) => {
+    return await prisma.gearItem.findUnique({
+        where: { id, isDeleted: false },
+        include: {
+            category: true,
+            provider: { select: { name: true, email: true } },
+            reviews: { include: { customer: { select: { name: true } } } }
+        }
+    });
+};
 export const GearService = {
-    createGearIntoDB,
-    getAllGearFromDB
+    getAllGearFromDB,
+    getSingleGearFromDB,
 };
 //# sourceMappingURL=gear.service.js.map
