@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
+    "module": "CommonJS",
+    "moduleResolution": "node",
     "target": "es2022",
     "types": ["node"],
     "sourceMap": true,
@@ -11,9 +11,8 @@
     "noUncheckedIndexedAccess": true,
     "strict": true,
     "isolatedModules": true,
-    "moduleDetection": "force",
+    "esModuleInterop": true,
     "skipLibCheck": true
   },
-  // "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }

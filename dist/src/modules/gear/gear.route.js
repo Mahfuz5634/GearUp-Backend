@@ -1,7 +1,10 @@
-import { Router } from "express";
-import { GearController } from "./gear.controller";
-const router = Router();
-router.get("/", GearController.getAllGears);
-router.get("/:id", GearController.getSingleGear);
-export const GearRoutes = router;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GearRoutes = void 0;
+const express_1 = require("express");
+const gear_controller_1 = require("./gear.controller");
+const router = (0, express_1.Router)();
+router.get("/", gear_controller_1.GearController.getAllGears);
+router.get("/:id", gear_controller_1.GearController.getSingleGear);
+exports.GearRoutes = router;
 //# sourceMappingURL=gear.route.js.map

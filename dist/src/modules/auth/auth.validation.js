@@ -1,21 +1,24 @@
-import { z } from "zod";
-const registerValidationSchema = z.object({
-    body: z.object({
-        name: z.string().min(1, { message: "Name is required" }),
-        email: z.string().email({ message: "Email is required" }),
-        password: z
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AuthValidation = void 0;
+const zod_1 = require("zod");
+const registerValidationSchema = zod_1.z.object({
+    body: zod_1.z.object({
+        name: zod_1.z.string().min(1, { message: "Name is required" }),
+        email: zod_1.z.string().email({ message: "Email is required" }),
+        password: zod_1.z
             .string()
             .min(6, { message: "Password must be at least 6 characters" }),
-        role: z.enum(["CUSTOMER", "PROVIDER"]),
+        role: zod_1.z.enum(["CUSTOMER", "PROVIDER"]),
     }),
 });
-const loginValidationSchema = z.object({
-    body: z.object({
-        email: z.string().email({ message: "Email is required" }),
-        password: z.string().min(1, { message: "Password is required" }),
+const loginValidationSchema = zod_1.z.object({
+    body: zod_1.z.object({
+        email: zod_1.z.string().email({ message: "Email is required" }),
+        password: zod_1.z.string().min(1, { message: "Password is required" }),
     }),
 });
-export const AuthValidation = {
+exports.AuthValidation = {
     registerValidationSchema,
     loginValidationSchema,
 };

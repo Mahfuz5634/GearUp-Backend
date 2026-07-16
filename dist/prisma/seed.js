@@ -1,13 +1,18 @@
-import bcrypt from "bcrypt";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../generated/prisma/client";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const adapter_pg_1 = require("@prisma/adapter-pg");
+const client_1 = require("../generated/prisma/client");
 const connectionString = `${process.env.DATABASE_URL}`;
-const adapter = new PrismaPg({ connectionString });
-const prisma = new PrismaClient({ adapter });
+const adapter = new adapter_pg_1.PrismaPg({ connectionString });
+const prisma = new client_1.PrismaClient({ adapter });
 async function main() {
-    const adminPassword = await bcrypt.hash("admin123", 12);
-    const providerPassword = await bcrypt.hash("provider123", 12);
-    const customerPassword = await bcrypt.hash("customer123", 12);
+    const adminPassword = await bcrypt_1.default.hash("admin123", 12);
+    const providerPassword = await bcrypt_1.default.hash("provider123", 12);
+    const customerPassword = await bcrypt_1.default.hash("customer123", 12);
     const admin = await prisma.user.upsert({
         where: { email: "admin@gearup.com" },
         update: {},

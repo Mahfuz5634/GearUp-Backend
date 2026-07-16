@@ -1,38 +1,44 @@
-import catchAsync from "../../utils/catchAsync";
-import { AuthService } from "./auth.service";
-import sendResponse from "../../utils/sendResponse";
-import { AppError } from "../../errors/AppError";
-const registerUser = catchAsync(async (req, res) => {
-    const result = await AuthService.registerUserDB(req.body);
-    sendResponse(res, {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.authController = void 0;
+const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
+const auth_service_1 = require("./auth.service");
+const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
+const AppError_1 = require("../../errors/AppError");
+const registerUser = (0, catchAsync_1.default)(async (req, res) => {
+    const result = await auth_service_1.AuthService.registerUserDB(req.body);
+    (0, sendResponse_1.default)(res, {
         statusCode: 201,
         success: true,
         message: "User registered successfully",
         data: result,
     });
 });
-const loginUser = catchAsync(async (req, res) => {
-    const result = await AuthService.loginUser(req.body);
-    sendResponse(res, {
+const loginUser = (0, catchAsync_1.default)(async (req, res) => {
+    const result = await auth_service_1.AuthService.loginUser(req.body);
+    (0, sendResponse_1.default)(res, {
         statusCode: 200,
         success: true,
         message: "User logged in successfully",
         data: result,
     });
 });
-const getMe = catchAsync(async (req, res) => {
+const getMe = (0, catchAsync_1.default)(async (req, res) => {
     const userId = req.user?.userId;
     if (!userId)
-        throw new AppError(401, "You are not authenticated");
-    const result = await AuthService.getMe(userId);
-    sendResponse(res, {
+        throw new AppError_1.AppError(401, "You are not authenticated");
+    const result = await auth_service_1.AuthService.getMe(userId);
+    (0, sendResponse_1.default)(res, {
         statusCode: 200,
         success: true,
         message: "User profile retrieved successfully",
         data: result,
     });
 });
-export const authController = {
+exports.authController = {
     registerUser,
     loginUser,
     getMe,

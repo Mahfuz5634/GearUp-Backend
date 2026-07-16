@@ -1,4 +1,7 @@
-import { prisma } from "../../lib/prisma";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GearService = void 0;
+const prisma_1 = require("../../lib/prisma");
 const getAllGearFromDB = async (query) => {
     const { category, brand, minPrice, maxPrice } = query;
     const whereConditions = { isDeleted: false };
@@ -13,7 +16,7 @@ const getAllGearFromDB = async (query) => {
         if (maxPrice)
             whereConditions.price.lte = Number(maxPrice);
     }
-    const result = await prisma.gearItem.findMany({
+    const result = await prisma_1.prisma.gearItem.findMany({
         where: whereConditions,
         include: {
             category: true,
@@ -24,7 +27,7 @@ const getAllGearFromDB = async (query) => {
     return result;
 };
 const getSingleGearFromDB = async (id) => {
-    return await prisma.gearItem.findUnique({
+    return await prisma_1.prisma.gearItem.findUnique({
         where: { id, isDeleted: false },
         include: {
             category: true,
@@ -33,7 +36,7 @@ const getSingleGearFromDB = async (id) => {
         }
     });
 };
-export const GearService = {
+exports.GearService = {
     getAllGearFromDB,
     getSingleGearFromDB,
 };
