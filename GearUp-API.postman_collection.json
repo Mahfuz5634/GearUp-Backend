@@ -6,7 +6,7 @@
     "_exporter_id": "GearUp-Backend"
   },
   "variable": [
-    { "key": "baseUrl", "value": "http://localhost:5000", "type": "string" },
+    { "key": "baseUrl", "value": "https://gearup-express-backend.vercel.app", "type": "string" },
     { "key": "customerToken", "value": "", "type": "string" },
     { "key": "providerToken", "value": "", "type": "string" },
     { "key": "adminToken", "value": "", "type": "string" },
