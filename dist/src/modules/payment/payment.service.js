@@ -26,23 +26,31 @@ const createCheckoutSessionIntoDB = async (customerId, rentalOrderId) => {
         throw new AppError_1.AppError(403, "This is not your order!");
     if (order.status !== "CONFIRMED")
         throw new AppError_1.AppError(400, "Order must be CONFIRMED by provider before payment.");
-    const existingPayment = await prisma_1.prisma.payment.findFirst({
-        where: { rentalOrderId, status: "PENDING" },
+    const existingPayment = await prisma_1.prisma.payment.findUnique({
+        where: { rentalOrderId },
     });
     if (existingPayment) {
-        try {
-            const existingSession = await stripe.checkout.sessions.retrieve(existingPayment.transactionId);
-            if (existingSession.url) {
-                return {
-                    checkoutUrl: existingSession.url,
-                    transactionId: existingPayment.transactionId,
-                    paymentId: existingPayment.id,
-                };
+        if (existingPayment.status === "COMPLETED") {
+            throw new AppError_1.AppError(400, "This order is already paid!");
+        }
+        if (existingPayment.status === "PENDING") {
+            try {
+                const existingSession = await stripe.checkout.sessions.retrieve(existingPayment.transactionId);
+                if (existingSession.url) {
+                    return {
+                        checkoutUrl: existingSession.url,
+                        transactionId: existingPayment.transactionId,
+                        paymentId: existingPayment.id,
+                    };
+                }
+            }
+            catch {
+                // Session expired or invalid
             }
         }
-        catch {
-            await prisma_1.prisma.payment.delete({ where: { id: existingPayment.id } });
-        }
+        // Delete old payment (FAILED or expired PENDING) so we can create a new one. 
+        // Using deleteMany to avoid throwing if it was already deleted by a concurrent request.
+        await prisma_1.prisma.payment.deleteMany({ where: { id: existingPayment.id } });
     }
     const days = Math.ceil((new Date(order.endDate).getTime() - new Date(order.startDate).getTime()) /
         (1000 * 3600 * 24));

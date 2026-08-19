@@ -9,15 +9,22 @@ const getAllUsersFromDB = async () => {
         orderBy: { createdAt: "desc" },
     });
 };
-const updateUserStatusInDB = async (userId, status) => {
+const updateUserStatusInDB = async (userId, status, role) => {
     const user = await prisma_1.prisma.user.findUnique({ where: { id: userId } });
     if (!user)
         throw new AppError_1.AppError(404, "User not found!");
     if (user.role === "ADMIN")
-        throw new AppError_1.AppError(403, "Cannot suspend an admin user!");
+        throw new AppError_1.AppError(403, "Cannot modify an admin user!");
+    if (role && role === "ADMIN")
+        throw new AppError_1.AppError(403, "Cannot assign the ADMIN role!");
+    const data = {};
+    if (status)
+        data.status = status;
+    if (role)
+        data.role = role;
     return await prisma_1.prisma.user.update({
         where: { id: userId },
-        data: { status },
+        data,
         select: { id: true, name: true, email: true, role: true, status: true },
     });
 };

@@ -17,11 +17,20 @@ export declare const GearService: {
         price: number;
         brand: string;
         stock: number;
+        model: string | null;
+        condition: string | null;
+        features: string[];
+        imageUrl: string | null;
         categoryId: string;
         providerId: string;
         isDeleted: boolean;
     })[]>;
     getSingleGearFromDB: (id: string) => Promise<({
+        rentals: {
+            status: import("../../../generated/prisma/enums").OrderStatus;
+            startDate: Date;
+            endDate: Date;
+        }[];
         reviews: ({
             customer: {
                 name: string;
@@ -29,8 +38,8 @@ export declare const GearService: {
         } & {
             id: string;
             createdAt: Date;
-            gearId: string;
             customerId: string;
+            gearId: string;
             rating: number;
             comment: string;
         })[];
@@ -51,6 +60,10 @@ export declare const GearService: {
         price: number;
         brand: string;
         stock: number;
+        model: string | null;
+        condition: string | null;
+        features: string[];
+        imageUrl: string | null;
         categoryId: string;
         providerId: string;
         isDeleted: boolean;

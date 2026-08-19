@@ -30,6 +30,10 @@ export declare const PaymentService: {
                 price: number;
                 brand: string;
                 stock: number;
+                model: string | null;
+                condition: string | null;
+                features: string[];
+                imageUrl: string | null;
                 categoryId: string;
                 providerId: string;
                 isDeleted: boolean;
@@ -39,10 +43,10 @@ export declare const PaymentService: {
             status: import("../../../generated/prisma/enums").OrderStatus;
             createdAt: Date;
             updatedAt: Date;
+            customerId: string;
             gearId: string;
             startDate: Date;
             endDate: Date;
-            customerId: string;
         };
     } & {
         id: string;
@@ -75,6 +79,10 @@ export declare const PaymentService: {
                 price: number;
                 brand: string;
                 stock: number;
+                model: string | null;
+                condition: string | null;
+                features: string[];
+                imageUrl: string | null;
                 categoryId: string;
                 providerId: string;
                 isDeleted: boolean;
@@ -84,10 +92,10 @@ export declare const PaymentService: {
             status: import("../../../generated/prisma/enums").OrderStatus;
             createdAt: Date;
             updatedAt: Date;
+            customerId: string;
             gearId: string;
             startDate: Date;
             endDate: Date;
-            customerId: string;
         };
     } & {
         id: string;

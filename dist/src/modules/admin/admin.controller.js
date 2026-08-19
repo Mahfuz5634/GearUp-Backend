@@ -21,7 +21,7 @@ const updateUserStatus = (0, catchAsync_1.default)(async (req, res) => {
     const userId = req.params.id;
     if (!userId)
         throw new AppError_1.AppError(400, "User ID is required");
-    const result = await admin_service_1.AdminService.updateUserStatusInDB(userId, req.body.status);
+    const result = await admin_service_1.AdminService.updateUserStatusInDB(userId, req.body.status, req.body.role);
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
         success: true,

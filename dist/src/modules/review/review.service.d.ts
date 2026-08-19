@@ -2,8 +2,8 @@ export declare const ReviewService: {
     createReviewIntoDB: (customerId: string, payload: any) => Promise<{
         id: string;
         createdAt: Date;
-        gearId: string;
         customerId: string;
+        gearId: string;
         rating: number;
         comment: string;
     }>;

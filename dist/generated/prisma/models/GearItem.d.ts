@@ -27,6 +27,9 @@ export type GearItemMinAggregateOutputType = {
     price: number | null;
     brand: string | null;
     stock: number | null;
+    model: string | null;
+    condition: string | null;
+    imageUrl: string | null;
     categoryId: string | null;
     providerId: string | null;
     isDeleted: boolean | null;
@@ -40,6 +43,9 @@ export type GearItemMaxAggregateOutputType = {
     price: number | null;
     brand: string | null;
     stock: number | null;
+    model: string | null;
+    condition: string | null;
+    imageUrl: string | null;
     categoryId: string | null;
     providerId: string | null;
     isDeleted: boolean | null;
@@ -53,6 +59,10 @@ export type GearItemCountAggregateOutputType = {
     price: number;
     brand: number;
     stock: number;
+    model: number;
+    condition: number;
+    features: number;
+    imageUrl: number;
     categoryId: number;
     providerId: number;
     isDeleted: number;
@@ -75,6 +85,9 @@ export type GearItemMinAggregateInputType = {
     price?: true;
     brand?: true;
     stock?: true;
+    model?: true;
+    condition?: true;
+    imageUrl?: true;
     categoryId?: true;
     providerId?: true;
     isDeleted?: true;
@@ -88,6 +101,9 @@ export type GearItemMaxAggregateInputType = {
     price?: true;
     brand?: true;
     stock?: true;
+    model?: true;
+    condition?: true;
+    imageUrl?: true;
     categoryId?: true;
     providerId?: true;
     isDeleted?: true;
@@ -101,6 +117,10 @@ export type GearItemCountAggregateInputType = {
     price?: true;
     brand?: true;
     stock?: true;
+    model?: true;
+    condition?: true;
+    features?: true;
+    imageUrl?: true;
     categoryId?: true;
     providerId?: true;
     isDeleted?: true;
@@ -191,6 +211,10 @@ export type GearItemGroupByOutputType = {
     price: number;
     brand: string;
     stock: number;
+    model: string | null;
+    condition: string | null;
+    features: string[];
+    imageUrl: string | null;
     categoryId: string;
     providerId: string;
     isDeleted: boolean;
@@ -215,6 +239,10 @@ export type GearItemWhereInput = {
     price?: Prisma.FloatFilter<"GearItem"> | number;
     brand?: Prisma.StringFilter<"GearItem"> | string;
     stock?: Prisma.IntFilter<"GearItem"> | number;
+    model?: Prisma.StringNullableFilter<"GearItem"> | string | null;
+    condition?: Prisma.StringNullableFilter<"GearItem"> | string | null;
+    features?: Prisma.StringNullableListFilter<"GearItem">;
+    imageUrl?: Prisma.StringNullableFilter<"GearItem"> | string | null;
     categoryId?: Prisma.StringFilter<"GearItem"> | string;
     providerId?: Prisma.StringFilter<"GearItem"> | string;
     isDeleted?: Prisma.BoolFilter<"GearItem"> | boolean;
@@ -232,6 +260,10 @@ export type GearItemOrderByWithRelationInput = {
     price?: Prisma.SortOrder;
     brand?: Prisma.SortOrder;
     stock?: Prisma.SortOrder;
+    model?: Prisma.SortOrderInput | Prisma.SortOrder;
+    condition?: Prisma.SortOrderInput | Prisma.SortOrder;
+    features?: Prisma.SortOrder;
+    imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
     categoryId?: Prisma.SortOrder;
     providerId?: Prisma.SortOrder;
     isDeleted?: Prisma.SortOrder;
@@ -252,6 +284,10 @@ export type GearItemWhereUniqueInput = Prisma.AtLeast<{
     price?: Prisma.FloatFilter<"GearItem"> | number;
     brand?: Prisma.StringFilter<"GearItem"> | string;
     stock?: Prisma.IntFilter<"GearItem"> | number;
+    model?: Prisma.StringNullableFilter<"GearItem"> | string | null;
+    condition?: Prisma.StringNullableFilter<"GearItem"> | string | null;
+    features?: Prisma.StringNullableListFilter<"GearItem">;
+    imageUrl?: Prisma.StringNullableFilter<"GearItem"> | string | null;
     categoryId?: Prisma.StringFilter<"GearItem"> | string;
     providerId?: Prisma.StringFilter<"GearItem"> | string;
     isDeleted?: Prisma.BoolFilter<"GearItem"> | boolean;
@@ -269,6 +305,10 @@ export type GearItemOrderByWithAggregationInput = {
     price?: Prisma.SortOrder;
     brand?: Prisma.SortOrder;
     stock?: Prisma.SortOrder;
+    model?: Prisma.SortOrderInput | Prisma.SortOrder;
+    condition?: Prisma.SortOrderInput | Prisma.SortOrder;
+    features?: Prisma.SortOrder;
+    imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
     categoryId?: Prisma.SortOrder;
     providerId?: Prisma.SortOrder;
     isDeleted?: Prisma.SortOrder;
@@ -290,6 +330,10 @@ export type GearItemScalarWhereWithAggregatesInput = {
     price?: Prisma.FloatWithAggregatesFilter<"GearItem"> | number;
     brand?: Prisma.StringWithAggregatesFilter<"GearItem"> | string;
     stock?: Prisma.IntWithAggregatesFilter<"GearItem"> | number;
+    model?: Prisma.StringNullableWithAggregatesFilter<"GearItem"> | string | null;
+    condition?: Prisma.StringNullableWithAggregatesFilter<"GearItem"> | string | null;
+    features?: Prisma.StringNullableListFilter<"GearItem">;
+    imageUrl?: Prisma.StringNullableWithAggregatesFilter<"GearItem"> | string | null;
     categoryId?: Prisma.StringWithAggregatesFilter<"GearItem"> | string;
     providerId?: Prisma.StringWithAggregatesFilter<"GearItem"> | string;
     isDeleted?: Prisma.BoolWithAggregatesFilter<"GearItem"> | boolean;
@@ -303,6 +347,10 @@ export type GearItemCreateInput = {
     price: number;
     brand: string;
     stock: number;
+    model?: string | null;
+    condition?: string | null;
+    features?: Prisma.GearItemCreatefeaturesInput | string[];
+    imageUrl?: string | null;
     isDeleted?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -318,6 +366,10 @@ export type GearItemUncheckedCreateInput = {
     price: number;
     brand: string;
     stock: number;
+    model?: string | null;
+    condition?: string | null;
+    features?: Prisma.GearItemCreatefeaturesInput | string[];
+    imageUrl?: string | null;
     categoryId: string;
     providerId: string;
     isDeleted?: boolean;
@@ -333,6 +385,10 @@ export type GearItemUpdateInput = {
     price?: Prisma.FloatFieldUpdateOperationsInput | number;
     brand?: Prisma.StringFieldUpdateOperationsInput | string;
     stock?: Prisma.IntFieldUpdateOperationsInput | number;
+    model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    features?: Prisma.GearItemUpdatefeaturesInput | string[];
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -348,6 +404,10 @@ export type GearItemUncheckedUpdateInput = {
     price?: Prisma.FloatFieldUpdateOperationsInput | number;
     brand?: Prisma.StringFieldUpdateOperationsInput | string;
     stock?: Prisma.IntFieldUpdateOperationsInput | number;
+    model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    features?: Prisma.GearItemUpdatefeaturesInput | string[];
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     categoryId?: Prisma.StringFieldUpdateOperationsInput | string;
     providerId?: Prisma.StringFieldUpdateOperationsInput | string;
     isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
@@ -363,6 +423,10 @@ export type GearItemCreateManyInput = {
     price: number;
     brand: string;
     stock: number;
+    model?: string | null;
+    condition?: string | null;
+    features?: Prisma.GearItemCreatefeaturesInput | string[];
+    imageUrl?: string | null;
     categoryId: string;
     providerId: string;
     isDeleted?: boolean;
@@ -376,6 +440,10 @@ export type GearItemUpdateManyMutationInput = {
     price?: Prisma.FloatFieldUpdateOperationsInput | number;
     brand?: Prisma.StringFieldUpdateOperationsInput | string;
     stock?: Prisma.IntFieldUpdateOperationsInput | number;
+    model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    features?: Prisma.GearItemUpdatefeaturesInput | string[];
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -387,6 +455,10 @@ export type GearItemUncheckedUpdateManyInput = {
     price?: Prisma.FloatFieldUpdateOperationsInput | number;
     brand?: Prisma.StringFieldUpdateOperationsInput | string;
     stock?: Prisma.IntFieldUpdateOperationsInput | number;
+    model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    features?: Prisma.GearItemUpdatefeaturesInput | string[];
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     categoryId?: Prisma.StringFieldUpdateOperationsInput | string;
     providerId?: Prisma.StringFieldUpdateOperationsInput | string;
     isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
@@ -401,6 +473,13 @@ export type GearItemListRelationFilter = {
 export type GearItemOrderByRelationAggregateInput = {
     _count?: Prisma.SortOrder;
 };
+export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null;
+    has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null;
+    hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>;
+    hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>;
+    isEmpty?: boolean;
+};
 export type GearItemCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     name?: Prisma.SortOrder;
@@ -408,6 +487,10 @@ export type GearItemCountOrderByAggregateInput = {
     price?: Prisma.SortOrder;
     brand?: Prisma.SortOrder;
     stock?: Prisma.SortOrder;
+    model?: Prisma.SortOrder;
+    condition?: Prisma.SortOrder;
+    features?: Prisma.SortOrder;
+    imageUrl?: Prisma.SortOrder;
     categoryId?: Prisma.SortOrder;
     providerId?: Prisma.SortOrder;
     isDeleted?: Prisma.SortOrder;
@@ -425,6 +508,9 @@ export type GearItemMaxOrderByAggregateInput = {
     price?: Prisma.SortOrder;
     brand?: Prisma.SortOrder;
     stock?: Prisma.SortOrder;
+    model?: Prisma.SortOrder;
+    condition?: Prisma.SortOrder;
+    imageUrl?: Prisma.SortOrder;
     categoryId?: Prisma.SortOrder;
     providerId?: Prisma.SortOrder;
     isDeleted?: Prisma.SortOrder;
@@ -438,6 +524,9 @@ export type GearItemMinOrderByAggregateInput = {
     price?: Prisma.SortOrder;
     brand?: Prisma.SortOrder;
     stock?: Prisma.SortOrder;
+    model?: Prisma.SortOrder;
+    condition?: Prisma.SortOrder;
+    imageUrl?: Prisma.SortOrder;
     categoryId?: Prisma.SortOrder;
     providerId?: Prisma.SortOrder;
     isDeleted?: Prisma.SortOrder;
@@ -528,6 +617,9 @@ export type GearItemUncheckedUpdateManyWithoutCategoryNestedInput = {
     updateMany?: Prisma.GearItemUpdateManyWithWhereWithoutCategoryInput | Prisma.GearItemUpdateManyWithWhereWithoutCategoryInput[];
     deleteMany?: Prisma.GearItemScalarWhereInput | Prisma.GearItemScalarWhereInput[];
 };
+export type GearItemCreatefeaturesInput = {
+    set: string[];
+};
 export type FloatFieldUpdateOperationsInput = {
     set?: number;
     increment?: number;
@@ -541,6 +633,13 @@ export type IntFieldUpdateOperationsInput = {
     decrement?: number;
     multiply?: number;
     divide?: number;
+};
+export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null;
+};
+export type GearItemUpdatefeaturesInput = {
+    set?: string[];
+    push?: string | string[];
 };
 export type BoolFieldUpdateOperationsInput = {
     set?: boolean;
@@ -576,6 +675,10 @@ export type GearItemCreateWithoutProviderInput = {
     price: number;
     brand: string;
     stock: number;
+    model?: string | null;
+    condition?: string | null;
+    features?: Prisma.GearItemCreatefeaturesInput | string[];
+    imageUrl?: string | null;
     isDeleted?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -590,6 +693,10 @@ export type GearItemUncheckedCreateWithoutProviderInput = {
     price: number;
     brand: string;
     stock: number;
+    model?: string | null;
+    condition?: string | null;
+    features?: Prisma.GearItemCreatefeaturesInput | string[];
+    imageUrl?: string | null;
     categoryId: string;
     isDeleted?: boolean;
     createdAt?: Date | string;
@@ -628,6 +735,10 @@ export type GearItemScalarWhereInput = {
     price?: Prisma.FloatFilter<"GearItem"> | number;
     brand?: Prisma.StringFilter<"GearItem"> | string;
     stock?: Prisma.IntFilter<"GearItem"> | number;
+    model?: Prisma.StringNullableFilter<"GearItem"> | string | null;
+    condition?: Prisma.StringNullableFilter<"GearItem"> | string | null;
+    features?: Prisma.StringNullableListFilter<"GearItem">;
+    imageUrl?: Prisma.StringNullableFilter<"GearItem"> | string | null;
     categoryId?: Prisma.StringFilter<"GearItem"> | string;
     providerId?: Prisma.StringFilter<"GearItem"> | string;
     isDeleted?: Prisma.BoolFilter<"GearItem"> | boolean;
@@ -641,6 +752,10 @@ export type GearItemCreateWithoutCategoryInput = {
     price: number;
     brand: string;
     stock: number;
+    model?: string | null;
+    condition?: string | null;
+    features?: Prisma.GearItemCreatefeaturesInput | string[];
+    imageUrl?: string | null;
     isDeleted?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -655,6 +770,10 @@ export type GearItemUncheckedCreateWithoutCategoryInput = {
     price: number;
     brand: string;
     stock: number;
+    model?: string | null;
+    condition?: string | null;
+    features?: Prisma.GearItemCreatefeaturesInput | string[];
+    imageUrl?: string | null;
     providerId: string;
     isDeleted?: boolean;
     createdAt?: Date | string;
@@ -690,6 +809,10 @@ export type GearItemCreateWithoutRentalsInput = {
     price: number;
     brand: string;
     stock: number;
+    model?: string | null;
+    condition?: string | null;
+    features?: Prisma.GearItemCreatefeaturesInput | string[];
+    imageUrl?: string | null;
     isDeleted?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -704,6 +827,10 @@ export type GearItemUncheckedCreateWithoutRentalsInput = {
     price: number;
     brand: string;
     stock: number;
+    model?: string | null;
+    condition?: string | null;
+    features?: Prisma.GearItemCreatefeaturesInput | string[];
+    imageUrl?: string | null;
     categoryId: string;
     providerId: string;
     isDeleted?: boolean;
@@ -731,6 +858,10 @@ export type GearItemUpdateWithoutRentalsInput = {
     price?: Prisma.FloatFieldUpdateOperationsInput | number;
     brand?: Prisma.StringFieldUpdateOperationsInput | string;
     stock?: Prisma.IntFieldUpdateOperationsInput | number;
+    model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    features?: Prisma.GearItemUpdatefeaturesInput | string[];
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -745,6 +876,10 @@ export type GearItemUncheckedUpdateWithoutRentalsInput = {
     price?: Prisma.FloatFieldUpdateOperationsInput | number;
     brand?: Prisma.StringFieldUpdateOperationsInput | string;
     stock?: Prisma.IntFieldUpdateOperationsInput | number;
+    model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    features?: Prisma.GearItemUpdatefeaturesInput | string[];
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     categoryId?: Prisma.StringFieldUpdateOperationsInput | string;
     providerId?: Prisma.StringFieldUpdateOperationsInput | string;
     isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
@@ -759,6 +894,10 @@ export type GearItemCreateWithoutReviewsInput = {
     price: number;
     brand: string;
     stock: number;
+    model?: string | null;
+    condition?: string | null;
+    features?: Prisma.GearItemCreatefeaturesInput | string[];
+    imageUrl?: string | null;
     isDeleted?: boolean;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -773,6 +912,10 @@ export type GearItemUncheckedCreateWithoutReviewsInput = {
     price: number;
     brand: string;
     stock: number;
+    model?: string | null;
+    condition?: string | null;
+    features?: Prisma.GearItemCreatefeaturesInput | string[];
+    imageUrl?: string | null;
     categoryId: string;
     providerId: string;
     isDeleted?: boolean;
@@ -800,6 +943,10 @@ export type GearItemUpdateWithoutReviewsInput = {
     price?: Prisma.FloatFieldUpdateOperationsInput | number;
     brand?: Prisma.StringFieldUpdateOperationsInput | string;
     stock?: Prisma.IntFieldUpdateOperationsInput | number;
+    model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    features?: Prisma.GearItemUpdatefeaturesInput | string[];
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -814,6 +961,10 @@ export type GearItemUncheckedUpdateWithoutReviewsInput = {
     price?: Prisma.FloatFieldUpdateOperationsInput | number;
     brand?: Prisma.StringFieldUpdateOperationsInput | string;
     stock?: Prisma.IntFieldUpdateOperationsInput | number;
+    model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    features?: Prisma.GearItemUpdatefeaturesInput | string[];
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     categoryId?: Prisma.StringFieldUpdateOperationsInput | string;
     providerId?: Prisma.StringFieldUpdateOperationsInput | string;
     isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
@@ -828,6 +979,10 @@ export type GearItemCreateManyProviderInput = {
     price: number;
     brand: string;
     stock: number;
+    model?: string | null;
+    condition?: string | null;
+    features?: Prisma.GearItemCreatefeaturesInput | string[];
+    imageUrl?: string | null;
     categoryId: string;
     isDeleted?: boolean;
     createdAt?: Date | string;
@@ -840,6 +995,10 @@ export type GearItemUpdateWithoutProviderInput = {
     price?: Prisma.FloatFieldUpdateOperationsInput | number;
     brand?: Prisma.StringFieldUpdateOperationsInput | string;
     stock?: Prisma.IntFieldUpdateOperationsInput | number;
+    model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    features?: Prisma.GearItemUpdatefeaturesInput | string[];
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -854,6 +1013,10 @@ export type GearItemUncheckedUpdateWithoutProviderInput = {
     price?: Prisma.FloatFieldUpdateOperationsInput | number;
     brand?: Prisma.StringFieldUpdateOperationsInput | string;
     stock?: Prisma.IntFieldUpdateOperationsInput | number;
+    model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    features?: Prisma.GearItemUpdatefeaturesInput | string[];
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     categoryId?: Prisma.StringFieldUpdateOperationsInput | string;
     isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -868,6 +1031,10 @@ export type GearItemUncheckedUpdateManyWithoutProviderInput = {
     price?: Prisma.FloatFieldUpdateOperationsInput | number;
     brand?: Prisma.StringFieldUpdateOperationsInput | string;
     stock?: Prisma.IntFieldUpdateOperationsInput | number;
+    model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    features?: Prisma.GearItemUpdatefeaturesInput | string[];
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     categoryId?: Prisma.StringFieldUpdateOperationsInput | string;
     isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -880,6 +1047,10 @@ export type GearItemCreateManyCategoryInput = {
     price: number;
     brand: string;
     stock: number;
+    model?: string | null;
+    condition?: string | null;
+    features?: Prisma.GearItemCreatefeaturesInput | string[];
+    imageUrl?: string | null;
     providerId: string;
     isDeleted?: boolean;
     createdAt?: Date | string;
@@ -892,6 +1063,10 @@ export type GearItemUpdateWithoutCategoryInput = {
     price?: Prisma.FloatFieldUpdateOperationsInput | number;
     brand?: Prisma.StringFieldUpdateOperationsInput | string;
     stock?: Prisma.IntFieldUpdateOperationsInput | number;
+    model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    features?: Prisma.GearItemUpdatefeaturesInput | string[];
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -906,6 +1081,10 @@ export type GearItemUncheckedUpdateWithoutCategoryInput = {
     price?: Prisma.FloatFieldUpdateOperationsInput | number;
     brand?: Prisma.StringFieldUpdateOperationsInput | string;
     stock?: Prisma.IntFieldUpdateOperationsInput | number;
+    model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    features?: Prisma.GearItemUpdatefeaturesInput | string[];
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     providerId?: Prisma.StringFieldUpdateOperationsInput | string;
     isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -920,6 +1099,10 @@ export type GearItemUncheckedUpdateManyWithoutCategoryInput = {
     price?: Prisma.FloatFieldUpdateOperationsInput | number;
     brand?: Prisma.StringFieldUpdateOperationsInput | string;
     stock?: Prisma.IntFieldUpdateOperationsInput | number;
+    model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    features?: Prisma.GearItemUpdatefeaturesInput | string[];
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     providerId?: Prisma.StringFieldUpdateOperationsInput | string;
     isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -964,6 +1147,10 @@ export type GearItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
     price?: boolean;
     brand?: boolean;
     stock?: boolean;
+    model?: boolean;
+    condition?: boolean;
+    features?: boolean;
+    imageUrl?: boolean;
     categoryId?: boolean;
     providerId?: boolean;
     isDeleted?: boolean;
@@ -982,6 +1169,10 @@ export type GearItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
     price?: boolean;
     brand?: boolean;
     stock?: boolean;
+    model?: boolean;
+    condition?: boolean;
+    features?: boolean;
+    imageUrl?: boolean;
     categoryId?: boolean;
     providerId?: boolean;
     isDeleted?: boolean;
@@ -997,6 +1188,10 @@ export type GearItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
     price?: boolean;
     brand?: boolean;
     stock?: boolean;
+    model?: boolean;
+    condition?: boolean;
+    features?: boolean;
+    imageUrl?: boolean;
     categoryId?: boolean;
     providerId?: boolean;
     isDeleted?: boolean;
@@ -1012,13 +1207,17 @@ export type GearItemSelectScalar = {
     price?: boolean;
     brand?: boolean;
     stock?: boolean;
+    model?: boolean;
+    condition?: boolean;
+    features?: boolean;
+    imageUrl?: boolean;
     categoryId?: boolean;
     providerId?: boolean;
     isDeleted?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type GearItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "price" | "brand" | "stock" | "categoryId" | "providerId" | "isDeleted" | "createdAt" | "updatedAt", ExtArgs["result"]["gearItem"]>;
+export type GearItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "price" | "brand" | "stock" | "model" | "condition" | "features" | "imageUrl" | "categoryId" | "providerId" | "isDeleted" | "createdAt" | "updatedAt", ExtArgs["result"]["gearItem"]>;
 export type GearItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>;
     provider?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
@@ -1049,6 +1248,10 @@ export type $GearItemPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
         price: number;
         brand: string;
         stock: number;
+        model: string | null;
+        condition: string | null;
+        features: string[];
+        imageUrl: string | null;
         categoryId: string;
         providerId: string;
         isDeleted: boolean;
@@ -1418,6 +1621,10 @@ export interface GearItemFieldRefs {
     readonly price: Prisma.FieldRef<"GearItem", 'Float'>;
     readonly brand: Prisma.FieldRef<"GearItem", 'String'>;
     readonly stock: Prisma.FieldRef<"GearItem", 'Int'>;
+    readonly model: Prisma.FieldRef<"GearItem", 'String'>;
+    readonly condition: Prisma.FieldRef<"GearItem", 'String'>;
+    readonly features: Prisma.FieldRef<"GearItem", 'String[]'>;
+    readonly imageUrl: Prisma.FieldRef<"GearItem", 'String'>;
     readonly categoryId: Prisma.FieldRef<"GearItem", 'String'>;
     readonly providerId: Prisma.FieldRef<"GearItem", 'String'>;
     readonly isDeleted: Prisma.FieldRef<"GearItem", 'Boolean'>;

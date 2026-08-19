@@ -27,23 +27,33 @@ const createCheckoutSessionIntoDB = async (
   if (order.status !== "CONFIRMED")
     throw new AppError(400, "Order must be CONFIRMED by provider before payment.");
 
-  const existingPayment = await prisma.payment.findFirst({
-    where: { rentalOrderId, status: "PENDING" },
+  const existingPayment = await prisma.payment.findUnique({
+    where: { rentalOrderId },
   });
 
   if (existingPayment) {
-    try {
-      const existingSession = await stripe.checkout.sessions.retrieve(existingPayment.transactionId);
-      if (existingSession.url) {
-        return {
-          checkoutUrl: existingSession.url,
-          transactionId: existingPayment.transactionId,
-          paymentId: existingPayment.id,
-        };
-      }
-    } catch {
-      await prisma.payment.delete({ where: { id: existingPayment.id } });
+    if (existingPayment.status === "COMPLETED") {
+      throw new AppError(400, "This order is already paid!");
     }
+    
+    if (existingPayment.status === "PENDING") {
+      try {
+        const existingSession = await stripe.checkout.sessions.retrieve(existingPayment.transactionId);
+        if (existingSession.url) {
+          return {
+            checkoutUrl: existingSession.url,
+            transactionId: existingPayment.transactionId,
+            paymentId: existingPayment.id,
+          };
+        }
+      } catch {
+        // Session expired or invalid
+      }
+    }
+    
+    // Delete old payment (FAILED or expired PENDING) so we can create a new one. 
+    // Using deleteMany to avoid throwing if it was already deleted by a concurrent request.
+    await prisma.payment.deleteMany({ where: { id: existingPayment.id } });
   }
 
   const days = Math.ceil(

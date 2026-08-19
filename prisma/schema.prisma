@@ -64,6 +64,9 @@ model GearItem {
   price       Float
   brand       String
   stock       Int
+  model       String?
+  condition   String?
+  features    String[]      @default([])
   imageUrl    String?
   categoryId  String
   category    Category      @relation(fields: [categoryId], references: [id])

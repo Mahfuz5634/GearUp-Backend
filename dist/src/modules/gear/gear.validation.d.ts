@@ -6,7 +6,11 @@ export declare const GearValidation: {
             description: z.ZodString;
             price: z.ZodNumber;
             brand: z.ZodString;
+            model: z.ZodOptional<z.ZodString>;
             stock: z.ZodNumber;
+            condition: z.ZodOptional<z.ZodString>;
+            features: z.ZodOptional<z.ZodArray<z.ZodString>>;
+            imageUrl: z.ZodOptional<z.ZodString>;
             categoryId: z.ZodString;
         }, z.core.$strip>;
     }, z.core.$strip>;
@@ -16,7 +20,11 @@ export declare const GearValidation: {
             description: z.ZodOptional<z.ZodString>;
             price: z.ZodOptional<z.ZodNumber>;
             brand: z.ZodOptional<z.ZodString>;
+            model: z.ZodOptional<z.ZodString>;
             stock: z.ZodOptional<z.ZodNumber>;
+            condition: z.ZodOptional<z.ZodString>;
+            features: z.ZodOptional<z.ZodArray<z.ZodString>>;
+            imageUrl: z.ZodOptional<z.ZodString>;
             categoryId: z.ZodOptional<z.ZodString>;
         }, z.core.$strip>;
     }, z.core.$strip>;

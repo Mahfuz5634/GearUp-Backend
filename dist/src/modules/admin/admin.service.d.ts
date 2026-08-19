@@ -1,17 +1,18 @@
+import { Role } from "../../../generated/prisma/enums";
 export declare const AdminService: {
     getAllUsersFromDB: () => Promise<{
         id: string;
         name: string;
         email: string;
-        role: import("../../../generated/prisma/enums").Role;
+        role: Role;
         status: string;
         createdAt: Date;
     }[]>;
-    updateUserStatusInDB: (userId: string, status: string) => Promise<{
+    updateUserStatusInDB: (userId: string, status: string, role?: Role) => Promise<{
         id: string;
         name: string;
         email: string;
-        role: import("../../../generated/prisma/enums").Role;
+        role: Role;
         status: string;
     }>;
     getAllGearsFromDB: () => Promise<({
@@ -32,6 +33,10 @@ export declare const AdminService: {
         price: number;
         brand: string;
         stock: number;
+        model: string | null;
+        condition: string | null;
+        features: string[];
+        imageUrl: string | null;
         categoryId: string;
         providerId: string;
         isDeleted: boolean;
@@ -55,6 +60,10 @@ export declare const AdminService: {
             price: number;
             brand: string;
             stock: number;
+            model: string | null;
+            condition: string | null;
+            features: string[];
+            imageUrl: string | null;
             categoryId: string;
             providerId: string;
             isDeleted: boolean;
@@ -74,10 +83,10 @@ export declare const AdminService: {
         status: import("../../../generated/prisma/enums").OrderStatus;
         createdAt: Date;
         updatedAt: Date;
+        customerId: string;
         gearId: string;
         startDate: Date;
         endDate: Date;
-        customerId: string;
     })[]>;
 };
 //# sourceMappingURL=admin.service.d.ts.map

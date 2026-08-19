@@ -9,6 +9,10 @@ export declare const ProviderService: {
         price: number;
         brand: string;
         stock: number;
+        model: string | null;
+        condition: string | null;
+        features: string[];
+        imageUrl: string | null;
         categoryId: string;
         providerId: string;
         isDeleted: boolean;
@@ -22,6 +26,10 @@ export declare const ProviderService: {
         price: number;
         brand: string;
         stock: number;
+        model: string | null;
+        condition: string | null;
+        features: string[];
+        imageUrl: string | null;
         categoryId: string;
         providerId: string;
         isDeleted: boolean;
@@ -35,6 +43,10 @@ export declare const ProviderService: {
         price: number;
         brand: string;
         stock: number;
+        model: string | null;
+        condition: string | null;
+        features: string[];
+        imageUrl: string | null;
         categoryId: string;
         providerId: string;
         isDeleted: boolean;
@@ -53,6 +65,10 @@ export declare const ProviderService: {
         price: number;
         brand: string;
         stock: number;
+        model: string | null;
+        condition: string | null;
+        features: string[];
+        imageUrl: string | null;
         categoryId: string;
         providerId: string;
         isDeleted: boolean;
@@ -77,6 +93,10 @@ export declare const ProviderService: {
             price: number;
             brand: string;
             stock: number;
+            model: string | null;
+            condition: string | null;
+            features: string[];
+            imageUrl: string | null;
             categoryId: string;
             providerId: string;
             isDeleted: boolean;
@@ -96,10 +116,10 @@ export declare const ProviderService: {
         status: OrderStatus;
         createdAt: Date;
         updatedAt: Date;
+        customerId: string;
         gearId: string;
         startDate: Date;
         endDate: Date;
-        customerId: string;
     })[]>;
     updateOrderStatusInDB: (orderId: string, providerId: string, status: string) => Promise<any>;
 };

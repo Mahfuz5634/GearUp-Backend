@@ -5,10 +5,10 @@ export declare const RentalService: {
         status: OrderStatus;
         createdAt: Date;
         updatedAt: Date;
+        customerId: string;
         gearId: string;
         startDate: Date;
         endDate: Date;
-        customerId: string;
     }>;
     getCustomerRentalsFromDB: (customerId: string) => Promise<({
         gear: {
@@ -25,6 +25,10 @@ export declare const RentalService: {
             price: number;
             brand: string;
             stock: number;
+            model: string | null;
+            condition: string | null;
+            features: string[];
+            imageUrl: string | null;
             categoryId: string;
             providerId: string;
             isDeleted: boolean;
@@ -44,10 +48,10 @@ export declare const RentalService: {
         status: OrderStatus;
         createdAt: Date;
         updatedAt: Date;
+        customerId: string;
         gearId: string;
         startDate: Date;
         endDate: Date;
-        customerId: string;
     })[]>;
     getRentalByIdFromDB: (orderId: string, userId: string) => Promise<{
         customer: {
@@ -74,6 +78,10 @@ export declare const RentalService: {
             price: number;
             brand: string;
             stock: number;
+            model: string | null;
+            condition: string | null;
+            features: string[];
+            imageUrl: string | null;
             categoryId: string;
             providerId: string;
             isDeleted: boolean;
@@ -93,20 +101,20 @@ export declare const RentalService: {
         status: OrderStatus;
         createdAt: Date;
         updatedAt: Date;
+        customerId: string;
         gearId: string;
         startDate: Date;
         endDate: Date;
-        customerId: string;
     }>;
     cancelRentalInDB: (orderId: string, customerId: string) => Promise<{
         id: string;
         status: OrderStatus;
         createdAt: Date;
         updatedAt: Date;
+        customerId: string;
         gearId: string;
         startDate: Date;
         endDate: Date;
-        customerId: string;
     }>;
     getProviderOrdersFromDB: (providerId: string) => Promise<({
         customer: {
@@ -128,6 +136,10 @@ export declare const RentalService: {
             price: number;
             brand: string;
             stock: number;
+            model: string | null;
+            condition: string | null;
+            features: string[];
+            imageUrl: string | null;
             categoryId: string;
             providerId: string;
             isDeleted: boolean;
@@ -147,10 +159,10 @@ export declare const RentalService: {
         status: OrderStatus;
         createdAt: Date;
         updatedAt: Date;
+        customerId: string;
         gearId: string;
         startDate: Date;
         endDate: Date;
-        customerId: string;
     })[]>;
     updateOrderStatusInDB: (orderId: string, providerId: string, newStatus: OrderStatus) => Promise<any>;
 };

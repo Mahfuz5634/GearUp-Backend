@@ -754,6 +754,10 @@ export declare const GearItemScalarFieldEnum: {
     readonly price: "price";
     readonly brand: "brand";
     readonly stock: "stock";
+    readonly model: "model";
+    readonly condition: "condition";
+    readonly features: "features";
+    readonly imageUrl: "imageUrl";
     readonly categoryId: "categoryId";
     readonly providerId: "providerId";
     readonly isDeleted: "isDeleted";
