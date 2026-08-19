@@ -9,6 +9,7 @@ const createGearValidationSchema = z.object({
     price: z.number(),
     brand: z.string().min(1, { message: "Brand is required" }),
     stock: z.number(),
+    imageUrl: z.string().url().optional(),
     categoryId: z.string().min(1, {
       message: "Category ID is required",
     }),
@@ -27,6 +28,7 @@ const updateGearValidationSchema = z.object({
     price: z.number().optional(),
     brand: z.string().min(1, { message: "Brand is required" }).optional(),
     stock: z.number().optional(),
+    imageUrl: z.string().url().optional(),
     categoryId: z
       .string()
       .min(1, {
