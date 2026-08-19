@@ -31,7 +31,8 @@ const getSingleGearFromDB = async (id: string) => {
     include: {
       category: true,
       provider: { select: { name: true, email: true } },
-      reviews: { include: { customer: { select: { name: true } } } }
+      reviews: { include: { customer: { select: { name: true } } } },
+      rentals: { select: { startDate: true, endDate: true, status: true } }
     }
   });
 };
