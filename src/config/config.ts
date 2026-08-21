@@ -3,6 +3,12 @@ import path from "path";
 
 dotenv.config({ path: path.join(process.cwd(), ".env") });
 
+if (!process.env.FRONTEND_URL && process.env.VERCEL) {
+  console.warn(
+    "[config] FRONTEND_URL is not set — Stripe success/cancel redirects will fall back to http://localhost:5173",
+  );
+}
+
 export default {
   port: parseInt(process.env.PORT || "5000"),
   jwt_access_secret: process.env.JWT_ACCESS_SECRET || "dev-access-secret",
