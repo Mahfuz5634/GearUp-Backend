@@ -2,10 +2,10 @@ export declare const ReviewService: {
     createReviewIntoDB: (customerId: string, payload: any) => Promise<{
         id: string;
         createdAt: Date;
-        customerId: string;
-        gearId: string;
         rating: number;
         comment: string;
+        customerId: string;
+        gearId: string;
     }>;
 };
 //# sourceMappingURL=review.service.d.ts.map

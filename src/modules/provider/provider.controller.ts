@@ -1,11 +1,33 @@
 import { Request, Response } from "express";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
+import uploadToImgbb from "../../utils/imgbbUpload";
 import { ProviderService } from "./provider.service";
+
+const parseGearPayload = async (req: Request) => {
+  const body = { ...req.body };
+
+  if (body.price !== undefined) body.price = Number(body.price);
+  if (body.stock !== undefined) body.stock = Number(body.stock);
+  if (typeof body.features === "string") {
+    body.features = body.features
+      .split(",")
+      .map((f: string) => f.trim())
+      .filter(Boolean);
+  }
+
+  const file = req.file;
+  if (file) {
+    body.imageUrl = await uploadToImgbb(file.buffer, file.originalname);
+  }
+
+  return body;
+};
 
 const createGear = catchAsync(async (req: Request, res: Response) => {
   const providerId = (req as any).user.userId;
-  const result = await ProviderService.createGearIntoDB(providerId, req.body);
+  const payload = await parseGearPayload(req);
+  const result = await ProviderService.createGearIntoDB(providerId, payload);
   sendResponse(res, {
     statusCode: 201,
     success: true,
@@ -16,7 +38,8 @@ const createGear = catchAsync(async (req: Request, res: Response) => {
 
 const updateGear = catchAsync(async (req: Request, res: Response) => {
   const providerId = (req as any).user.userId;
-  const result = await ProviderService.updateGearInDB(providerId, req.params.id as string, req.body);
+  const payload = await parseGearPayload(req);
+  const result = await ProviderService.updateGearInDB(providerId, req.params.id as string, payload);
   sendResponse(res, {
     statusCode: 200,
     success: true,

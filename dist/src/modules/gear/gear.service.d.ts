@@ -38,10 +38,10 @@ export declare const GearService: {
         } & {
             id: string;
             createdAt: Date;
-            customerId: string;
-            gearId: string;
             rating: number;
             comment: string;
+            customerId: string;
+            gearId: string;
         })[];
         category: {
             id: string;

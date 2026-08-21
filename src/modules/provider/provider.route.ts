@@ -1,6 +1,7 @@
 import { Router } from "express";
 import auth from "../../middlewares/auth";
 import validateRequest from "../../middlewares/validateRequest";
+import upload from "../../middlewares/upload";
 import { GearValidation } from "../gear/gear.validation";
 import { RentalValidation } from "../rental/rental.validation";
 import { ProviderController } from "./provider.controller";
@@ -10,6 +11,7 @@ const router = Router();
 router.post(
   "/gear",
   auth("PROVIDER"),
+  upload.single("image"),
   validateRequest(GearValidation.createGearValidationSchema),
   ProviderController.createGear
 );
@@ -17,6 +19,7 @@ router.post(
 router.put(
   "/gear/:id",
   auth("PROVIDER"),
+  upload.single("image"),
   validateRequest(GearValidation.updateGearValidationSchema),
   ProviderController.updateGear
 );

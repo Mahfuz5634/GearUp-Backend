@@ -4,12 +4,12 @@ export declare const GearValidation: {
         body: z.ZodObject<{
             name: z.ZodString;
             description: z.ZodString;
-            price: z.ZodNumber;
+            price: z.ZodCoercedNumber<unknown>;
             brand: z.ZodString;
             model: z.ZodOptional<z.ZodString>;
-            stock: z.ZodNumber;
+            stock: z.ZodCoercedNumber<unknown>;
             condition: z.ZodOptional<z.ZodString>;
-            features: z.ZodOptional<z.ZodArray<z.ZodString>>;
+            features: z.ZodOptional<z.ZodUnion<readonly [z.ZodArray<z.ZodString>, z.ZodString]>>;
             imageUrl: z.ZodOptional<z.ZodString>;
             categoryId: z.ZodString;
         }, z.core.$strip>;
@@ -18,12 +18,12 @@ export declare const GearValidation: {
         body: z.ZodObject<{
             name: z.ZodOptional<z.ZodString>;
             description: z.ZodOptional<z.ZodString>;
-            price: z.ZodOptional<z.ZodNumber>;
+            price: z.ZodOptional<z.ZodCoercedNumber<unknown>>;
             brand: z.ZodOptional<z.ZodString>;
             model: z.ZodOptional<z.ZodString>;
-            stock: z.ZodOptional<z.ZodNumber>;
+            stock: z.ZodOptional<z.ZodCoercedNumber<unknown>>;
             condition: z.ZodOptional<z.ZodString>;
-            features: z.ZodOptional<z.ZodArray<z.ZodString>>;
+            features: z.ZodOptional<z.ZodUnion<readonly [z.ZodArray<z.ZodString>, z.ZodString]>>;
             imageUrl: z.ZodOptional<z.ZodString>;
             categoryId: z.ZodOptional<z.ZodString>;
         }, z.core.$strip>;

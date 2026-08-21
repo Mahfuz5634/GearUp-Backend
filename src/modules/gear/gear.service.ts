@@ -1,7 +1,7 @@
 import { prisma } from "../../lib/prisma"
 
 const getAllGearFromDB = async (query: any) => {
-  const { category, brand, minPrice, maxPrice } = query;
+  const { category, brand, minPrice, maxPrice, startDate, endDate } = query;
 
   const whereConditions: any = { isDeleted: false };
 
@@ -11,6 +11,25 @@ const getAllGearFromDB = async (query: any) => {
     whereConditions.price = {};
     if (minPrice) whereConditions.price.gte = Number(minPrice);
     if (maxPrice) whereConditions.price.lte = Number(maxPrice);
+  }
+
+  // Exclude gears with overlapping active rentals for the requested dates
+  if (startDate && endDate) {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    if (!isNaN(start.getTime()) && !isNaN(end.getTime()) && start <= end) {
+      end.setHours(23, 59, 59, 999);
+
+      whereConditions.stock = { gt: 0 };
+      whereConditions.rentals = {
+        none: {
+          status: { notIn: ["CANCELLED", "RETURNED"] },
+          startDate: { lte: end },
+          endDate: { gte: start },
+        },
+      };
+    }
   }
 
   const result = await prisma.gearItem.findMany({

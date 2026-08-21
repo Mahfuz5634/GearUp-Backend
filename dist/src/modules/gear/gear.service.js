@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GearService = void 0;
 const prisma_1 = require("../../lib/prisma");
 const getAllGearFromDB = async (query) => {
-    const { category, brand, minPrice, maxPrice } = query;
+    const { category, brand, minPrice, maxPrice, startDate, endDate } = query;
     const whereConditions = { isDeleted: false };
     if (category)
         whereConditions.category = { name: category };
@@ -15,6 +15,22 @@ const getAllGearFromDB = async (query) => {
             whereConditions.price.gte = Number(minPrice);
         if (maxPrice)
             whereConditions.price.lte = Number(maxPrice);
+    }
+    // Exclude gears with overlapping active rentals for the requested dates
+    if (startDate && endDate) {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        if (!isNaN(start.getTime()) && !isNaN(end.getTime()) && start <= end) {
+            end.setHours(23, 59, 59, 999);
+            whereConditions.stock = { gt: 0 };
+            whereConditions.rentals = {
+                none: {
+                    status: { notIn: ["CANCELLED", "RETURNED"] },
+                    startDate: { lte: end },
+                    endDate: { gte: start },
+                },
+            };
+        }
     }
     const result = await prisma_1.prisma.gearItem.findMany({
         where: whereConditions,

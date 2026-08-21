@@ -6,10 +6,30 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProviderController = void 0;
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
+const imgbbUpload_1 = __importDefault(require("../../utils/imgbbUpload"));
 const provider_service_1 = require("./provider.service");
+const parseGearPayload = async (req) => {
+    const body = { ...req.body };
+    if (body.price !== undefined)
+        body.price = Number(body.price);
+    if (body.stock !== undefined)
+        body.stock = Number(body.stock);
+    if (typeof body.features === "string") {
+        body.features = body.features
+            .split(",")
+            .map((f) => f.trim())
+            .filter(Boolean);
+    }
+    const file = req.file;
+    if (file) {
+        body.imageUrl = await (0, imgbbUpload_1.default)(file.buffer, file.originalname);
+    }
+    return body;
+};
 const createGear = (0, catchAsync_1.default)(async (req, res) => {
     const providerId = req.user.userId;
-    const result = await provider_service_1.ProviderService.createGearIntoDB(providerId, req.body);
+    const payload = await parseGearPayload(req);
+    const result = await provider_service_1.ProviderService.createGearIntoDB(providerId, payload);
     (0, sendResponse_1.default)(res, {
         statusCode: 201,
         success: true,
@@ -19,7 +39,8 @@ const createGear = (0, catchAsync_1.default)(async (req, res) => {
 });
 const updateGear = (0, catchAsync_1.default)(async (req, res) => {
     const providerId = req.user.userId;
-    const result = await provider_service_1.ProviderService.updateGearInDB(providerId, req.params.id, req.body);
+    const payload = await parseGearPayload(req);
+    const result = await provider_service_1.ProviderService.updateGearInDB(providerId, req.params.id, payload);
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
         success: true,
